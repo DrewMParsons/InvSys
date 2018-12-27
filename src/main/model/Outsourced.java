@@ -40,8 +40,8 @@ public class Outsourced extends Part{
 
     
 
-    public SimpleStringProperty getCompanyId() 
+    public String getCompanyId() 
     {
-        return companyId;
+        return companyId.get();
     }
 }

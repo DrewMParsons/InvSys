@@ -64,10 +64,18 @@ public class AddPartController implements Initializable {
 
     @FXML
     private void InhouseRadioButtonHandler(ActionEvent event) {
+        CompanyName.setVisible(false);
+        CompanyNameField.setVisible(false);
+        MachineID1.setVisible(true);
+        PartMachineID.setVisible(true);
     }
 
     @FXML
     private void outsourcedRadioButtonHandler(ActionEvent event) {
+        CompanyName.setVisible(true);
+        CompanyNameField.setVisible(true);
+        MachineID1.setVisible(false);
+        PartMachineID.setVisible(false);
     }
 
     @FXML
@@ -76,6 +84,7 @@ public class AddPartController implements Initializable {
 
     @FXML
     private void cancelButtonHandler(ActionEvent event) {
+        
     }
     
 }

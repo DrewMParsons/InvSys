@@ -214,7 +214,15 @@ public class MainController implements Initializable{
         ModifyPartController controller = loader.getController();
         
         //returns the person object that is currently selected
-        controller.initData(PartsTable.getSelectionModel().getSelectedItem());
+        Part selectedPart = PartsTable.getSelectionModel().getSelectedItem();
+        if((selectedPart.getClass()== InHouse.class)){
+            controller.initDataInHouse((InHouse) selectedPart);
+            
+        }
+        else{
+            controller.initDataOutsourced((Outsourced) selectedPart);
+        }
+        
         
         
         

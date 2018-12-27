@@ -39,9 +39,9 @@ public class InHouse extends Part
         this.machineId = machineId;
     }
 
-    public SimpleIntegerProperty getMachineId() 
+    public int getMachineId() 
     {
-        return machineId;
+        return machineId.get();
     }
 
     
