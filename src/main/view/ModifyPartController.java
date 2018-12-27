@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import main.model.Part;
 
 /**
  * FXML Controller class
@@ -53,6 +54,8 @@ public class ModifyPartController implements Initializable {
     private Button SaveButton;
     @FXML
     private Button CancelButton;
+    
+    private Part part;
 
     /**
      * Initializes the controller class.
@@ -78,7 +81,14 @@ public class ModifyPartController implements Initializable {
     private void cancelButtonHandler(ActionEvent event) {
     }
 
-    void initData(Object selectedItem) {
+    public void initData(Part part) {
+            this.part = part;
+            PartID.setText(Integer.toString(part.getId()));
+            PartName.setText(part.getName());
+            PartInv.setText(Integer.toString(part.getStock()));
+            PartPrice.setText(Double.toString(part.getPrice()));
+            PartMax.setText(Integer.toString(part.getMax()));
+            PartMin.setText(Integer.toString(part.getMin()));
        
         
         

@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import main.model.Product;
 
 /**
  * FXML Controller class
@@ -35,27 +36,27 @@ public class ModifyProductController implements Initializable {
     @FXML
     private TextField GetProductMin;
     @FXML
-    private TableView<?> AddPartTable;
+    private TableView<?> AddProductTable;
     @FXML
-    private TableColumn<?, ?> AddPartID;
+    private TableColumn<?, ?> AddProductID;
     @FXML
-    private TableColumn<?, ?> AddPartName;
+    private TableColumn<?, ?> AddProductName;
     @FXML
-    private TableColumn<?, ?> AddPartInv;
+    private TableColumn<?, ?> AddProductInv;
     @FXML
-    private TableColumn<?, ?> AddPartPrice;
+    private TableColumn<?, ?> AddProductPrice;
     @FXML
     private Button AddButton;
     @FXML
-    private TableView<?> DeletePartTable;
+    private TableView<?> DeleteProductTable;
     @FXML
-    private TableColumn<?, ?> DeletePartID;
+    private TableColumn<?, ?> DeleteProductID;
     @FXML
-    private TableColumn<?, ?> DeletePartName;
+    private TableColumn<?, ?> DeleteProductName;
     @FXML
-    private TableColumn<?, ?> DeletePartInv;
+    private TableColumn<?, ?> DeleteProductInv;
     @FXML
-    private TableColumn<?, ?> DeletePartPrice;
+    private TableColumn<?, ?> DeleteProductPrice;
     @FXML
     private Button DeleteButton;
     @FXML
@@ -66,6 +67,8 @@ public class ModifyProductController implements Initializable {
     private Button SearchButton;
     @FXML
     private TextField SearchField;
+    
+    private Product product;
 
     /**
      * Initializes the controller class.
@@ -93,6 +96,16 @@ public class ModifyProductController implements Initializable {
 
     @FXML
     private void searchButtonHandler(ActionEvent event) {
+    }
+
+    void initData(Product product) {
+        this.product = product;
+            productID.setText(Integer.toString(product.getId()));
+            GetProductName.setText(product.getName());
+            GetProductInv.setText(Integer.toString(product.getStock()));
+            GetProductPrice.setText(Double.toString(product.getPrice()));
+            GetProductMax.setText(Integer.toString(product.getMax()));
+            GetProductMin.setText(Integer.toString(product.getMin()));
     }
     
 }

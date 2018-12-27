@@ -15,60 +15,87 @@ import javafx.collections.ObservableList;
  * @author Drew
  */
 public class Product {
-    private int id;
-    private SimpleStringProperty name;
-    private SimpleDoubleProperty price;
-    private SimpleIntegerProperty stock;
-    private SimpleIntegerProperty min;
-    private SimpleIntegerProperty max;
+    private int Id;
+    private SimpleStringProperty Name;
+    private SimpleDoubleProperty Price;
+    private SimpleIntegerProperty Stock;
+    private SimpleIntegerProperty Min;
+    private SimpleIntegerProperty Max;
     private ObservableList<Part> associatedParts;
 
+    public Product(int id, SimpleStringProperty name, SimpleDoubleProperty price, SimpleIntegerProperty stock, SimpleIntegerProperty min, SimpleIntegerProperty max, ObservableList<Part> associatedParts) {
+        this.Id = id;
+        this.Name = name;
+        this.Price = price;
+        this.Stock = stock;
+        this.Min = min;
+        this.Max = max;
+        this.associatedParts = associatedParts;
+    }
+    
+    public Product(int id, String name, double price, int stock, int min, int max){
+        setId(id);
+        setName(name);
+        setPrice(new SimpleDoubleProperty(price));
+        setStock(new SimpleIntegerProperty(stock));
+        setMin(new SimpleIntegerProperty(min));
+        setMax(new SimpleIntegerProperty(max));
+        
+    }
+    
+    
+
     public int getId() {
-        return id;
+        return Id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.Id = id;
+    }
+    
+    public String getName(){
+        return Name.get();
+    }
+    
+    
+
+     public void setName(String name) {
+        
+        this.Name = new SimpleStringProperty(name);
     }
 
-    public SimpleStringProperty getName() {
-        return name;
+    public double getPrice(){
+        return Price.get();
     }
-
-    public void setName(SimpleStringProperty name) {
-        this.name = name;
-    }
-
-    public SimpleDoubleProperty getPrice() {
-        return price;
-    }
+     
+    
 
     public void setPrice(SimpleDoubleProperty price) {
-        this.price = price;
+        this.Price = price;
     }
 
-    public SimpleIntegerProperty getStock() {
-        return stock;
+    public int getStock() {
+        return Stock.get();
     }
 
     public void setStock(SimpleIntegerProperty stock) {
-        this.stock = stock;
+        this.Stock = stock;
     }
 
-    public SimpleIntegerProperty getMin() {
-        return min;
+    public int getMin() {
+        return Min.get();
     }
 
     public void setMin(SimpleIntegerProperty min) {
-        this.min = min;
+        this.Min = min;
     }
 
-    public SimpleIntegerProperty getMax() {
-        return max;
+    public int getMax() {
+        return Max.get();
     }
 
     public void setMax(SimpleIntegerProperty max) {
-        this.max = max;
+        this.Max = max;
     }
 
     public ObservableList<Part> getAssociatedParts() {
