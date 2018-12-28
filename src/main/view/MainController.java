@@ -92,21 +92,27 @@ public class MainController implements Initializable {
 
     @FXML
     private Button ExitButton;
-    ObservableList<Part> allParts = FXCollections.observableArrayList();
-    ObservableList<Product> allProducts = FXCollections.observableArrayList();
-    Inventory systemInventory = new Inventory(allParts, allProducts);
+    
+    private InventorySystem invSys;
+    
+    public MainController(){
+        
+    }
+    
 
     /**
-     * method enables the Modify Parts Button  after a row is selected
+     * method enables the Modify/Delete Parts Button  after a row is selected
      */
     public void clickedOnPartsTable(){
         this.ModifyPartButton.setDisable(false);
+        this.DeletePartButton.setDisable(false);
     }
     /**
-     * method enables the Modify Product Button  after a row is selected
+     * method enables the Modify/Delete Product Button  after a row is selected
      */
     public void clickedOnProductTable(){
         this.ModifyProductButton.setDisable(false);
+        this.DeleteProductButton.setDisable(false);
     }
     
     @FXML
@@ -123,63 +129,14 @@ public class MainController implements Initializable {
 
     @FXML
     void SearchProductsButtonHandler(ActionEvent event) {
-        String searchItem = SearchProductsField.getText();
-        boolean found = false;
-        try {
-            int itemNumber = Integer.parseInt(searchItem);
-            for (Product p : allProducts) {
-                if (p.getId() == itemNumber) {
-
-                    System.out.println("This is part " + itemNumber);
-                    found = true;
-
-                }
-
-            }
-            if (found == false) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("INFO ");
-                alert.setHeaderText("error");
-                alert.setContentText("Part no found");
-
-                alert.showAndWait();
-            }
-        } catch (NumberFormatException e) {
-            for (Product p : allProducts) {
-                if (p.getName().equals(searchItem)) {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("CONFIRM ");
-                    alert.setHeaderText("PRODUCT " + p.getName());
-                    alert.setContentText("Product found");
-
-                    alert.showAndWait();
-                    System.out.println("this is part " + p.getId());
-                    found = true;
-
-                }
-            }
-            if (found == false) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("INFO ");
-                alert.setHeaderText("error");
-                alert.setContentText("Part no found");
-
-                alert.showAndWait();
-            }
-        }
-
     }
+    
 
     @FXML
     void addPartButtonHandler(ActionEvent event) throws IOException {
         Parent tableViewParent = FXMLLoader.load(getClass().getResource("AddPart.fxml"));
         Scene tableViewScene = new Scene(tableViewParent);
 
-        //This line gets the Stage information
-        //In Start, the stage is passed through as a param.  here we need to get it
-        //the action event(event) doesnt know what type of object is returned, so we tell it the return is of type node
-        //BCS its a Node, we cam then get the scene and window, 
-        //Then cast that as a Stage, and assign to our Stage(window)
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         AddPartController controller = new AddPartController();
         window.setScene(tableViewScene);
@@ -263,23 +220,7 @@ public class MainController implements Initializable {
 
     }
 
-    //dummy info to test Parts table
-    public ObservableList createPartsList() {
-
-        systemInventory.addPart(new Outsourced(0, "chain", 5, 1, 10, 2, "ChainDudes"));
-        systemInventory.addPart(new InHouse(1, "horn", 2, 3, 1, 90, 1));
-
-        return (systemInventory.getAllParts());
-    }
-
-    //dummy info to test Product table
-    public ObservableList createProductList() {
-        systemInventory.addProduct(new Product(1, "bike", 500, 4, 1, 20));
-        systemInventory.addProduct(new Product(2, "trike", 400, 1, 1, 3));
-
-        return systemInventory.getAllProducts();
-
-    }
+   
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -296,13 +237,19 @@ public class MainController implements Initializable {
         ProductPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
         ProductInv.setCellValueFactory(new PropertyValueFactory<>("Stock"));
 
-        //load test data
-        ProductsTable.setItems(createProductList());
-        PartsTable.setItems(createPartsList());
+       
         
-        //Disable the modify buttons until a row is selected
+        //Disable the modify/delete buttons until a row is selected
         this.ModifyPartButton.setDisable(true);
         this.ModifyProductButton.setDisable(true);
+        this.DeletePartButton.setDisable(true);
+        this.DeleteProductButton.setDisable(true);
+    }
+    
+    public void setInventorySystem(InventorySystem invSys){
+        this.invSys = invSys;
+        PartsTable.setItems(invSys.systemInventory.getAllParts());
+        ProductsTable.setItems(invSys.systemInventory.getAllProducts());
     }
 
 }

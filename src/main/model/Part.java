@@ -15,21 +15,18 @@ import javafx.beans.property.SimpleStringProperty;
  * @author Drew
  */
 public abstract class Part {
-    private int id;
-    private SimpleStringProperty Name;
-    private SimpleDoubleProperty Price;
-    private SimpleIntegerProperty Stock;
-    private SimpleIntegerProperty Min;
-    private SimpleIntegerProperty Max;
+    private SimpleIntegerProperty Id = new SimpleIntegerProperty(0);
+    private SimpleStringProperty Name = new SimpleStringProperty("");
+    private SimpleDoubleProperty Price = new SimpleDoubleProperty(0.0);
+    private SimpleIntegerProperty Stock = new SimpleIntegerProperty(0);
+    private SimpleIntegerProperty Min = new SimpleIntegerProperty(0);
+    private SimpleIntegerProperty Max = new SimpleIntegerProperty(0);
     
 
     public int getId() {
-        return id;
+        return Id.get();
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     /**
      * @return the Name
@@ -65,44 +62,66 @@ public abstract class Part {
     public int getMax() {
         return Max.get();
     }
+    
+    public void setId(int id) {
+        Id.set(id);
+    }
 
     /**
      * @param name the Name to set
      */
     public void setName(String name) {
         
-        this.Name = new SimpleStringProperty(name);
+        Name.set(name);
     }
 
     /**
      * @param Price the Price to set
      */
-    public void setPrice(SimpleDoubleProperty Price) {
-        this.Price = Price;
+    public void setPrice(double price) {
+        Price.set(price);
     }
 
     /**
      * @param Stock the Stock to set
      */
-    public void setStock(SimpleIntegerProperty Stock) {
-        this.Stock = Stock;
+    public void setStock(int stock) {
+        Stock.set(stock);
     }
 
     /**
      * @param Min the Min to set
      */
-    public void setMin(SimpleIntegerProperty Min) {
-        this.Min = Min;
+    public void setMin(int min) {
+        Min.set(min);
     }
 
     /**
      * @param Max the Max to set
      */
-    public void setMax(SimpleIntegerProperty Max) {
-        this.Max = Max;
+    public void setMax(int max) {
+        Max.set(max);
     }
 
- 
+    public SimpleIntegerProperty idProperty(){
+        return Id;
+    }
+    
+    public SimpleStringProperty nameProperty(){
+        return Name;
+    }
+    public SimpleDoubleProperty priceProperty(){
+        return Price;
+    }
+    public SimpleIntegerProperty stockProperty(){
+        return Stock;
+    }
+    public SimpleIntegerProperty minProperty(){
+        return Min;
+    }
+    public SimpleIntegerProperty maxProperty(){
+        return Max;
+    }
     
     
 }

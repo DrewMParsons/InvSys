@@ -16,7 +16,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class Outsourced extends Part{
     
         
-    private SimpleStringProperty companyId;
+    private SimpleStringProperty CompanyId = new SimpleStringProperty("");
 
     
    //constructor
@@ -24,24 +24,24 @@ public class Outsourced extends Part{
     {
         setId(id);
         setName(name);
-        setPrice(new SimpleDoubleProperty(price));
-        setStock(new SimpleIntegerProperty(stock));
-        setMin(new SimpleIntegerProperty(min));
-        setMax(new SimpleIntegerProperty(max));
-        setCompanyId(new SimpleStringProperty(companyId));
+        setPrice(price);
+        setStock(stock);
+        setMin(min);
+        setMax(max);
+        setCompanyId(companyId);
     }
         
 
     //getters & setters
 
-    public void setCompanyId(SimpleStringProperty companyId) {
-        this.companyId = companyId;
+    public void setCompanyId(String companyId) {
+        CompanyId.set(companyId);
     }
 
     
 
     public String getCompanyId() 
     {
-        return companyId.get();
+        return CompanyId.get();
     }
 }

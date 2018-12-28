@@ -17,31 +17,39 @@ import javafx.beans.property.SimpleStringProperty;
 public class InHouse extends Part
 {
     
-    private SimpleIntegerProperty machineId;
+    private final SimpleIntegerProperty MachineId = new SimpleIntegerProperty(0);
 
     
-   //constructor
+   //constructors
+    
+    public InHouse(){
+        this(0,"",0.0,0,0,0,0);
+    }
+    
     public InHouse(int id, String name, double price, int stock, int min, int max, int machineId)
     {
         setId(id);
         setName(name);
-        setPrice(new SimpleDoubleProperty(price));
-        setStock(new SimpleIntegerProperty(stock));
-        setMin(new SimpleIntegerProperty(min));
-        setMax(new SimpleIntegerProperty(max));
-        setMachineId(new SimpleIntegerProperty(machineId));
+        setPrice(price);
+        setStock(stock);
+        setMin(min);
+        setMax(max);
+        setMachineId(machineId);
     }
         
 
     //getters & setters
 
-    public void setMachineId(SimpleIntegerProperty machineId) {
-        this.machineId = machineId;
+    public void setMachineId(int machineId) {
+        MachineId.set(machineId);
     }
 
     public int getMachineId() 
     {
-        return machineId.get();
+        return MachineId.get();
+    }
+    public SimpleIntegerProperty machineIdProperty(){
+        return MachineId;
     }
 
     
