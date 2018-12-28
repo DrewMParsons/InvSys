@@ -3,11 +3,6 @@ package main.view;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,16 +10,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import main.model.InHouse;
-import main.model.Inventory;
-import main.model.Outsourced;
 import main.model.Part;
 import main.model.Product;
 
@@ -172,30 +163,15 @@ public class MainController implements Initializable {
 
     @FXML
     void modifyPartButtonHandler(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation((getClass().getResource("ModifyPart.fxml")));
-        Parent tableViewParent = loader.load();
-
-        Scene tableViewScene = new Scene(tableViewParent);
-
-        //access controller and call a method
-        ModifyPartController controller = loader.getController();
-
-        //use instance of to check if inhouse, then cast back to part
-        //returns the person object that is currently selected
         Part selectedPart = PartsTable.getSelectionModel().getSelectedItem();
-        if (selectedPart instanceof InHouse) {
-           
-            controller.initDataInHouse((InHouse) selectedPart);
-           
-
-        } else {
-            controller.initDataOutsourced((Outsourced) selectedPart);
+    
+        boolean okClicked = invSys.showModifyPartDialog(selectedPart);
+        if (okClicked) {
+            invSys.systemInventory.lookupPart(selectedPart.getId());
         }
 
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(tableViewScene);
-        window.show();
+    
+        
 
     }
 
@@ -216,7 +192,7 @@ public class MainController implements Initializable {
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
-        window.show();
+        
 
     }
 
@@ -244,6 +220,10 @@ public class MainController implements Initializable {
         this.ModifyProductButton.setDisable(true);
         this.DeletePartButton.setDisable(true);
         this.DeleteProductButton.setDisable(true);
+    }
+
+    public InventorySystem getInvSys() {
+        return invSys;
     }
     
     public void setInventorySystem(InventorySystem invSys){

@@ -9,7 +9,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.model.InHouse;
 import main.model.Inventory;
@@ -45,6 +47,9 @@ public class InventorySystem extends Application {
         
 
     
+    }
+    public Inventory getSystemInventory(){
+        return systemInventory;
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -82,6 +87,45 @@ public class InventorySystem extends Application {
         primaryStage.show();
     }
     
-    
+    /**
+ * Opens a dialog to edit details for the specified person. If the user
+ * clicks OK, the changes are saved into the provided person object and true
+ * is returned.
+ * 
+ * @param person the person object to be edited
+ * @return true if the user clicked OK, false otherwise.
+ */
+public boolean showModifyPartDialog(Part part) {
+    try {
+        // Load the fxml file and create a new stage for the popup dialog.
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(InventorySystem.class.getResource("ModifyPart.fxml"));
+        AnchorPane page = (AnchorPane) loader.load();
+
+        // Create the dialog Stage.
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Modify Part");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(primaryStage);
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+
+        // Set the part into the controller.
+        ModifyPartController controller = loader.getController();
+        controller.setDialogStage(dialogStage);
+        if(part instanceof InHouse)
+            controller.initDataInHouse((InHouse) part);
+        else
+            controller.initDataOutsourced((Outsourced) part);
+
+        // Show the dialog and wait until the user closes it
+        dialogStage.showAndWait();
+
+        return controller.isOkClicked();
+    } catch (IOException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
     
 }

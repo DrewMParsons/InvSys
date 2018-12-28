@@ -6,18 +6,25 @@
 package main.view;
 
 import com.sun.deploy.cache.Cache;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.stage.Stage;
 import main.model.InHouse;
 import main.model.Outsourced;
+import main.model.Part;
 
 /**
  * FXML Controller class
@@ -56,7 +63,9 @@ public class ModifyPartController implements Initializable {
     private Button SaveButton;
     @FXML
     private Button CancelButton;
-
+    private Stage dialogStage;
+    private boolean okClicked = false;
+    private Part part;
     private InHouse InHousePart;
     private Outsourced OutsourcedPart;
 
@@ -66,6 +75,12 @@ public class ModifyPartController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+    }
+    public void setDialogStage(Stage dialogStage){
+        this.dialogStage = dialogStage;
+    }
+    public boolean isOkClicked(){
+        return okClicked;
     }
     @FXML
     private void InhouseRadioButtonHandler(ActionEvent event) {
@@ -84,13 +99,41 @@ public class ModifyPartController implements Initializable {
     }
 
     @FXML
-    private void saveButtonHandler(ActionEvent event) {
+    private void saveButtonHandler(ActionEvent event) throws IOException {
+        if(InhouseRadioButton.isSelected()){
+            InHousePart.setId(Integer.parseInt(PartID.getText()));
+            InHousePart.setName(PartName.getText());
+            InHousePart.setPrice(Double.parseDouble(PartPrice.getText()));
+            InHousePart.setStock(Integer.parseInt(PartInv.getText()));
+            InHousePart.setMin(Integer.parseInt(PartMin.getText()));
+            InHousePart.setMax(Integer.parseInt(PartMax.getText()));
+            InHousePart.setMachineId(Integer.parseInt(PartMachineID.getText()));
+            okClicked = true;
+            dialogStage.close();
+          
+        }
+        else{
+            OutsourcedPart.setId(Integer.parseInt(PartID.getText()));
+            OutsourcedPart.setName(PartName.getText());
+            OutsourcedPart.setPrice(Double.parseDouble(PartPrice.getText()));
+            OutsourcedPart.setStock(Integer.parseInt(PartInv.getText()));
+            OutsourcedPart.setMin(Integer.parseInt(PartMin.getText()));
+            OutsourcedPart.setMax(Integer.parseInt(PartMax.getText()));
+            OutsourcedPart.setCompanyId(CompanyNameField.getText());
+            okClicked = true;
+            dialogStage.close();
+           
+        }
+        
+
+        
     }
 
     @FXML
     private void cancelButtonHandler(ActionEvent event) {
+        dialogStage.close();
     }
-   
+   //these are your setPerson
     public void initDataInHouse(InHouse part) {
             this.InHousePart = part;
             PartID.setText(Integer.toString(part.getId()));
