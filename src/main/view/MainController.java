@@ -28,7 +28,7 @@ import main.model.Outsourced;
 import main.model.Part;
 import main.model.Product;
 
-public class MainController implements Initializable{
+public class MainController implements Initializable {
 
     @FXML
     private Button SearchPartsButton;
@@ -70,16 +70,16 @@ public class MainController implements Initializable{
     private TableView<Product> ProductsTable;
 
     @FXML
-    private TableColumn<?, ?> ProductID;
+    private TableColumn<Product, ?> ProductID;
 
     @FXML
-    private TableColumn<?, ?> ProductName;
+    private TableColumn<Product, ?> ProductName;
 
     @FXML
-    private TableColumn<?, ?> ProductInv;
+    private TableColumn<Product, ?> ProductInv;
 
     @FXML
-    private TableColumn<?, ?> ProductPrice;
+    private TableColumn<Product, ?> ProductPrice;
 
     @FXML
     private Button AddProductButton;
@@ -95,12 +95,11 @@ public class MainController implements Initializable{
     ObservableList<Part> allParts = FXCollections.observableArrayList();
     ObservableList<Product> allProducts = FXCollections.observableArrayList();
     Inventory systemInventory = new Inventory(allParts, allProducts);
-    
+
     @FXML
     void ExitButtonHandler(ActionEvent event) {
         Stage stage = (Stage) ExitButton.getScene().getWindow();
         stage.close();
-        
 
     }
 
@@ -112,49 +111,46 @@ public class MainController implements Initializable{
     @FXML
     void SearchProductsButtonHandler(ActionEvent event) {
         String searchItem = SearchProductsField.getText();
-        boolean found=false;
-        try{
+        boolean found = false;
+        try {
             int itemNumber = Integer.parseInt(searchItem);
-            for(Product p: allProducts){
-                if(p.getId()==itemNumber){
-                    
-                    System.out.println("This is part "+ itemNumber);
-                    found=true;
-                    
-                    
+            for (Product p : allProducts) {
+                if (p.getId() == itemNumber) {
+
+                    System.out.println("This is part " + itemNumber);
+                    found = true;
+
                 }
-                
+
             }
-            if(found==false){
+            if (found == false) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("INFO ");
                 alert.setHeaderText("error");
                 alert.setContentText("Part no found");
-                
+
                 alert.showAndWait();
             }
-        }
-        catch(NumberFormatException e){
-            for(Product p:allProducts){
-                if(p.getName().equals(searchItem)){
+        } catch (NumberFormatException e) {
+            for (Product p : allProducts) {
+                if (p.getName().equals(searchItem)) {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("CONFIRM ");
                     alert.setHeaderText("PRODUCT " + p.getName());
                     alert.setContentText("Product found");
-                
+
                     alert.showAndWait();
-                    System.out.println("this is part "+ p.getId());
-                    found=true;
-                    
-                    
+                    System.out.println("this is part " + p.getId());
+                    found = true;
+
                 }
             }
-            if(found==false){
+            if (found == false) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("INFO ");
                 alert.setHeaderText("error");
                 alert.setContentText("Part no found");
-                
+
                 alert.showAndWait();
             }
         }
@@ -164,15 +160,14 @@ public class MainController implements Initializable{
     @FXML
     void addPartButtonHandler(ActionEvent event) throws IOException {
         Parent tableViewParent = FXMLLoader.load(getClass().getResource("AddPart.fxml"));
-        Scene tableViewScene = new Scene(tableViewParent); 
-        
+        Scene tableViewScene = new Scene(tableViewParent);
+
         //This line gets the Stage information
         //In Start, the stage is passed through as a param.  here we need to get it
         //the action event(event) doesnt know what type of object is returned, so we tell it the return is of type node
         //BCS its a Node, we cam then get the scene and window, 
         //Then cast that as a Stage, and assign to our Stage(window)
-        
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
         window.show();
 
@@ -181,22 +176,22 @@ public class MainController implements Initializable{
     @FXML
     void addProductButtonHandler(ActionEvent event) throws IOException {
         Parent tableViewParent = FXMLLoader.load(getClass().getResource("AddProduct.fxml"));
-        Scene tableViewScene = new Scene(tableViewParent); 
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene tableViewScene = new Scene(tableViewParent);
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
         window.show();
     }
 
     @FXML
     void deletePartButtonHandler(ActionEvent event) {
-        int index =  PartsTable.getSelectionModel().getSelectedIndex();
+        int index = PartsTable.getSelectionModel().getSelectedIndex();
         PartsTable.getItems().remove(index);
 
     }
 
     @FXML
     void deleteProductButtonHandler(ActionEvent event) {
-        int index =  ProductsTable.getSelectionModel().getSelectedIndex();
+        int index = ProductsTable.getSelectionModel().getSelectedIndex();
         ProductsTable.getItems().remove(index);
 
     }
@@ -206,27 +201,25 @@ public class MainController implements Initializable{
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation((getClass().getResource("ModifyPart.fxml")));
         Parent tableViewParent = loader.load();
-        
-        
-        Scene tableViewScene = new Scene(tableViewParent); 
-        
+
+        Scene tableViewScene = new Scene(tableViewParent);
+
         //access controller and call a method
         ModifyPartController controller = loader.getController();
-        
+
+        //use instance of to check if inhouse, then cast back to part
         //returns the person object that is currently selected
         Part selectedPart = PartsTable.getSelectionModel().getSelectedItem();
-        if((selectedPart.getClass()== InHouse.class)){
+        if (selectedPart instanceof InHouse) {
+           
             controller.initDataInHouse((InHouse) selectedPart);
-            
-        }
-        else{
+           
+
+        } else {
             controller.initDataOutsourced((Outsourced) selectedPart);
         }
-        
-        
-        
-        
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
         window.show();
 
@@ -237,59 +230,55 @@ public class MainController implements Initializable{
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation((getClass().getResource("ModifyProduct.fxml")));
         Parent tableViewParent = loader.load();
-        
-        
-        Scene tableViewScene = new Scene(tableViewParent); 
-        
+
+        Scene tableViewScene = new Scene(tableViewParent);
+
         //access controller and call a method
         ModifyProductController controller = loader.getController();
-        
+
         //returns the  object that is currently selected
         controller.initData(ProductsTable.getSelectionModel().getSelectedItem());
-        
-        
-        
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
         window.show();
 
     }
-    
+
     //dummy info to test Parts table
-    public ObservableList createPartsList(){
-        
+    public ObservableList createPartsList() {
+
         systemInventory.addPart(new Outsourced(0, "chain", 5, 1, 10, 2, "ChainDudes"));
         systemInventory.addPart(new InHouse(1, "horn", 2, 3, 1, 90, 1));
-        
+
         return (systemInventory.getAllParts());
     }
-    
+
     //dummy info to test Product table
-    public ObservableList createProductList(){
+    public ObservableList createProductList() {
         systemInventory.addProduct(new Product(1, "bike", 500, 4, 1, 20));
         systemInventory.addProduct(new Product(2, "trike", 400, 1, 1, 3));
-        
+
         return systemInventory.getAllProducts();
-        
+
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        
+
         //set up columns for Parts Table
         PartID.setCellValueFactory(new PropertyValueFactory<>("Id"));
         PartName.setCellValueFactory(new PropertyValueFactory<>("Name"));
         PartPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
         PartInv.setCellValueFactory(new PropertyValueFactory<>("Stock"));
-        
+
         //set up columns for Product Table
         ProductID.setCellValueFactory(new PropertyValueFactory<>("Id"));
         ProductName.setCellValueFactory(new PropertyValueFactory<>("Name"));
         ProductPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
         ProductInv.setCellValueFactory(new PropertyValueFactory<>("Stock"));
-        
+
         //load test data
-       
         ProductsTable.setItems(createProductList());
         PartsTable.setItems(createPartsList());
     }

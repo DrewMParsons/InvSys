@@ -67,8 +67,8 @@ public class ModifyPartController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
-
-private void InhouseRadioButtonHandler(ActionEvent event) {
+    @FXML
+    private void InhouseRadioButtonHandler(ActionEvent event) {
         CompanyName.setVisible(false);
         CompanyNameField.setVisible(false);
         MachineID1.setVisible(true);
@@ -90,7 +90,7 @@ private void InhouseRadioButtonHandler(ActionEvent event) {
     @FXML
     private void cancelButtonHandler(ActionEvent event) {
     }
-
+   
     public void initDataInHouse(InHouse part) {
             this.InHousePart = part;
             PartID.setText(Integer.toString(part.getId()));
@@ -100,7 +100,7 @@ private void InhouseRadioButtonHandler(ActionEvent event) {
             PartMax.setText(Integer.toString(part.getMax()));
             PartMin.setText(Integer.toString(part.getMin()));
             PartMachineID.setText(Integer.toString(part.getMachineId()));
-            InhouseRadioButton.setSelected(true);
+            
 
             }
     
