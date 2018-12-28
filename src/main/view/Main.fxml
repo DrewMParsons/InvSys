@@ -43,7 +43,7 @@
                                     <TextField fx:id="SearchPartsField" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="249.0" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
-                              <TableView fx:id="PartsTable" layoutY="71.0" prefHeight="407.0" prefWidth="395.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="71.0">
+                              <TableView fx:id="PartsTable" layoutY="71.0" onMouseClicked="#clickedOnPartsTable" prefHeight="407.0" prefWidth="395.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="71.0">
                                 <columns>
                                   <TableColumn fx:id="PartID" prefWidth="75.0" text="Part ID" />
                                   <TableColumn fx:id="PartName" prefWidth="91.0" text="Part Name" />
@@ -79,7 +79,7 @@
                                     <TextField fx:id="SearchProductsField" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="249.0" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
-                              <TableView fx:id="ProductsTable" layoutY="71.0" prefHeight="407.0" prefWidth="395.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="71.0">
+                              <TableView fx:id="ProductsTable" layoutY="71.0" onMouseClicked="#clickedOnProductTable" prefHeight="407.0" prefWidth="395.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="71.0">
                                  <columns>
                                     <TableColumn fx:id="ProductID" prefWidth="75.0" text="Product ID" />
                                     <TableColumn fx:id="ProductName" prefWidth="91.0" text="Product Name" />

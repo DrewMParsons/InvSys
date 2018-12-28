@@ -96,6 +96,19 @@ public class MainController implements Initializable {
     ObservableList<Product> allProducts = FXCollections.observableArrayList();
     Inventory systemInventory = new Inventory(allParts, allProducts);
 
+    /**
+     * method enables the Modify Parts Button  after a row is selected
+     */
+    public void clickedOnPartsTable(){
+        this.ModifyPartButton.setDisable(false);
+    }
+    /**
+     * method enables the Modify Product Button  after a row is selected
+     */
+    public void clickedOnProductTable(){
+        this.ModifyProductButton.setDisable(false);
+    }
+    
     @FXML
     void ExitButtonHandler(ActionEvent event) {
         Stage stage = (Stage) ExitButton.getScene().getWindow();
@@ -168,8 +181,11 @@ public class MainController implements Initializable {
         //BCS its a Node, we cam then get the scene and window, 
         //Then cast that as a Stage, and assign to our Stage(window)
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        AddPartController controller = new AddPartController();
         window.setScene(tableViewScene);
-        window.show();
+        
+        
+        window.showAndWait();
 
     }
 
@@ -177,6 +193,7 @@ public class MainController implements Initializable {
     void addProductButtonHandler(ActionEvent event) throws IOException {
         Parent tableViewParent = FXMLLoader.load(getClass().getResource("AddProduct.fxml"));
         Scene tableViewScene = new Scene(tableViewParent);
+        
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
         window.show();
@@ -235,6 +252,7 @@ public class MainController implements Initializable {
 
         //access controller and call a method
         ModifyProductController controller = loader.getController();
+        
 
         //returns the  object that is currently selected
         controller.initData(ProductsTable.getSelectionModel().getSelectedItem());
@@ -281,6 +299,10 @@ public class MainController implements Initializable {
         //load test data
         ProductsTable.setItems(createProductList());
         PartsTable.setItems(createPartsList());
+        
+        //Disable the modify buttons until a row is selected
+        this.ModifyPartButton.setDisable(true);
+        this.ModifyProductButton.setDisable(true);
     }
 
 }

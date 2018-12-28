@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -53,6 +54,8 @@ public class AddPartController implements Initializable {
     private Button SaveButton;
     @FXML
     private Button CancelButton;
+    
+    private Stage addPartStage;
 
     /**
      * Initializes the controller class.
@@ -60,7 +63,8 @@ public class AddPartController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    } 
+    
 
     @FXML
     private void InhouseRadioButtonHandler(ActionEvent event) {
@@ -84,6 +88,8 @@ public class AddPartController implements Initializable {
 
     @FXML
     private void cancelButtonHandler(ActionEvent event) {
+        Stage stage = (Stage) CancelButton.getScene().getWindow();
+        stage.close();
         
     }
     
