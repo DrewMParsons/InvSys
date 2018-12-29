@@ -34,16 +34,16 @@ public class MainController implements Initializable {
     private TableView<Part> PartsTable;
 
     @FXML
-    private TableColumn<Part, ?> PartID;
+    private TableColumn<Part, Integer> PartID;
 
     @FXML
-    private TableColumn<Part, ?> PartName;
+    private TableColumn<Part, String> PartName;
 
     @FXML
-    private TableColumn<Part, ?> PartInv;
+    private TableColumn<Part, Integer> PartInv;
 
     @FXML
-    private TableColumn<Part, ?> PartPrice;
+    private TableColumn<Part, Double> PartPrice;
 
     @FXML
     private Button AddPartButton;
@@ -64,16 +64,16 @@ public class MainController implements Initializable {
     private TableView<Product> ProductsTable;
 
     @FXML
-    private TableColumn<Product, ?> ProductID;
+    private TableColumn<Product, Integer> ProductID;
 
     @FXML
-    private TableColumn<Product, ?> ProductName;
+    private TableColumn<Product, String> ProductName;
 
     @FXML
-    private TableColumn<Product, ?> ProductInv;
+    private TableColumn<Product, Integer> ProductInv;
 
     @FXML
-    private TableColumn<Product, ?> ProductPrice;
+    private TableColumn<Product, Double> ProductPrice;
 
     @FXML
     private Button AddProductButton;
@@ -127,7 +127,7 @@ public class MainController implements Initializable {
 
     @FXML
     void addPartButtonHandler(ActionEvent event) throws IOException {
-        Part part = null;
+        //Part part = null;
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AddPart.fxml"));
 
@@ -135,10 +135,10 @@ public class MainController implements Initializable {
         stage.initOwner(AddPartButton.getScene().getWindow());
         stage.setScene(new Scene((Parent) loader.load()));
         AddPartController controller = loader.getController();
-        controller.initDataInHouse(part);
+        //controller.initDataInHouse(part);
 
         stage.showAndWait();
-        invSys.systemInventory.getAllParts().add(part);
+        //invSys.systemInventory.getAllParts().add(part);
 
         
 

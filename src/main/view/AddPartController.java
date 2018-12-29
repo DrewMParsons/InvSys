@@ -76,7 +76,6 @@ public class AddPartController implements Initializable {
     private Part part;
     private InHouse InHousePart;
     private Outsourced OutsourcedPart;
-   
 
     /**
      * Initializes the controller class.
@@ -84,27 +83,37 @@ public class AddPartController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         InHouseRadioButton.setSelected(true);
-        
-        
-        
 
     }
-
+/**
+ * Sets label and prompt text for an InHouse item
+ * @param event 
+ */
     @FXML
     private void InHouseRadioButtonHandler(ActionEvent event) {
         OtherID.setText("Machine ID");
         PartOtherID.setPromptText("Machine ID");
     }
+    
+    
+    /**
+ * Sets label and prompt text for an Outsourced item
+ * @param event 
+ */
 
     @FXML
     private void outsourcedRadioButtonHandler(ActionEvent event) {
         OtherID.setText("Company Name");
         PartOtherID.setPromptText("Company Name");
     }
-
+/**
+ * When save button is pressed, the fields are saved into the proper object,
+ * depending on which radio button is selected
+ * @param event 
+ */
     @FXML
-    private void saveButtonHandler(ActionEvent event) throws IOException {
-        
+    private void saveButtonHandler(ActionEvent event) {
+
         if (InHouseRadioButton.isSelected()) {
             InHousePart.setId(Integer.parseInt(PartID.getText()));
             InHousePart.setName(PartName.getText());
@@ -132,6 +141,11 @@ public class AddPartController implements Initializable {
         CancelButton.getScene().getWindow().hide();
 
     }
+    
+    /**
+     * initializes fields
+     * @param part 
+     */
 
     public void initDataInHouse(Part part) {
         this.InHousePart = (InHouse) part;

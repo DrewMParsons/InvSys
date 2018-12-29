@@ -50,9 +50,9 @@
                                     <TableColumn fx:id="PartInv" prefWidth="110.0" text="Inventory Level" />
                                     <TableColumn fx:id="PartPrice" prefWidth="117.0" text="Price/Cost per Unit" />
                                 </columns>
-                                 <columnResizePolicy>
+<!--                                 <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                 </columnResizePolicy>
+                                 </columnResizePolicy>-->
                               </TableView>
                               <ButtonBar layoutX="120.0" layoutY="472.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="0.0">
                                 <buttons>
@@ -86,9 +86,9 @@
                                     <TableColumn fx:id="ProductInv" prefWidth="110.0" text="Inventory Level" />
                                     <TableColumn fx:id="ProductPrice" prefWidth="117.0" text="Price  per Unit" />
                                  </columns>
-                                 <columnResizePolicy>
+<!--                                 <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                 </columnResizePolicy>
+                                 </columnResizePolicy>-->
                               </TableView>
                               <ButtonBar layoutX="120.0" layoutY="472.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="0.0">
                                  <buttons>
