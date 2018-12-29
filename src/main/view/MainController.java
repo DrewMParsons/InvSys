@@ -3,7 +3,6 @@ package main.view;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -18,7 +18,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import main.model.InHouse;
-import main.model.Outsourced;
 import main.model.Part;
 import main.model.Product;
 
@@ -118,11 +117,37 @@ public class MainController implements Initializable {
 
     @FXML
     void SearchPartsButtonHandler(ActionEvent event) {
+        Part search = invSys.systemInventory.lookupPart(SearchPartsField.getText());
+        if (search != null) {
+            PartsTable.scrollTo(search);
+            
+
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("Error");
+            alert.setContentText("Part: " + SearchPartsField.getText() + " not found");
+
+            alert.showAndWait();
+        }
 
     }
 
     @FXML
     void SearchProductsButtonHandler(ActionEvent event) {
+        Product search = invSys.systemInventory.lookupProduct(SearchProductsField.getText());
+        if (search != null) {
+            ProductsTable.scrollTo(search);
+            
+
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("Error");
+            alert.setContentText("Product: " + SearchProductsField.getText() + " not found");
+
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -236,6 +261,10 @@ public class MainController implements Initializable {
         this.invSys = invSys;
         PartsTable.setItems(invSys.systemInventory.getAllParts());
         ProductsTable.setItems(invSys.systemInventory.getAllProducts());
+    }
+    
+    public void highlightOnSearch(){
+        
     }
 
 }
