@@ -52,13 +52,9 @@ public class AddPartController implements Initializable {
     @FXML
     private TextField PartMin;
     @FXML
-    private TextField CompanyNameField;
+    private TextField PartOtherID;
     @FXML
-    private Label CompanyName;
-    @FXML
-    private TextField PartMachineID;
-    @FXML
-    private Label MachineID1;
+    private Label OtherID;
     @FXML
     private Button SaveButton;
     @FXML
@@ -86,28 +82,24 @@ public class AddPartController implements Initializable {
         String min = PartMin.getText();
         if (InhouseRadioButton.isSelected()) {
             
-            String machID = PartMachineID.getText();
+            String machID = PartOtherID.getText();
             
         } else {
-            String compID = CompanyNameField.getText();
+            String compID = PartOtherID.getText();
         }
         
     }
 
     @FXML
     private void InhouseRadioButtonHandler(ActionEvent event) {
-        CompanyName.setVisible(false);
-        CompanyNameField.setVisible(false);
-        MachineID1.setVisible(true);
-        PartMachineID.setVisible(true);
+        OtherID.setText("Machine ID");
+        PartOtherID.setPromptText("Machine ID");
     }
 
     @FXML
     private void outsourcedRadioButtonHandler(ActionEvent event) {
-        CompanyName.setVisible(true);
-        CompanyNameField.setVisible(true);
-        MachineID1.setVisible(false);
-        PartMachineID.setVisible(false);
+        OtherID.setText("Company Name");
+        PartOtherID.setPromptText("Company Name");
     }
 
     @FXML

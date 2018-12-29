@@ -51,14 +51,11 @@ public class ModifyPartController implements Initializable {
     private TextField PartMax;
     @FXML
     private TextField PartMin;
+    
     @FXML
-    private TextField CompanyNameField;
+    private TextField PartOtherID;
     @FXML
-    private Label CompanyName;
-    @FXML
-    private TextField PartMachineID;
-    @FXML
-    private Label MachineID1;
+    private Label OtherID;
     @FXML
     private Button SaveButton;
     @FXML
@@ -84,18 +81,14 @@ public class ModifyPartController implements Initializable {
     }
     @FXML
     private void InhouseRadioButtonHandler(ActionEvent event) {
-        CompanyName.setVisible(false);
-        CompanyNameField.setVisible(false);
-        MachineID1.setVisible(true);
-        PartMachineID.setVisible(true);
+        OtherID.setText("Machine ID");
+        PartOtherID.setPromptText("Machine ID");
     }
 
     @FXML
     private void outsourcedRadioButtonHandler(ActionEvent event) {
-        CompanyName.setVisible(true);
-        CompanyNameField.setVisible(true);
-        MachineID1.setVisible(false);
-        PartMachineID.setVisible(false);
+        OtherID.setText("Company Name");
+        PartOtherID.setPromptText("Company Name");
     }
 
     @FXML
@@ -107,7 +100,7 @@ public class ModifyPartController implements Initializable {
             InHousePart.setStock(Integer.parseInt(PartInv.getText()));
             InHousePart.setMin(Integer.parseInt(PartMin.getText()));
             InHousePart.setMax(Integer.parseInt(PartMax.getText()));
-            InHousePart.setMachineId(Integer.parseInt(PartMachineID.getText()));
+            InHousePart.setMachineId(Integer.parseInt(PartOtherID.getText()));
             okClicked = true;
             dialogStage.close();
           
@@ -119,7 +112,7 @@ public class ModifyPartController implements Initializable {
             OutsourcedPart.setStock(Integer.parseInt(PartInv.getText()));
             OutsourcedPart.setMin(Integer.parseInt(PartMin.getText()));
             OutsourcedPart.setMax(Integer.parseInt(PartMax.getText()));
-            OutsourcedPart.setCompanyId(CompanyNameField.getText());
+            OutsourcedPart.setCompanyId(PartOtherID.getText());
             okClicked = true;
             dialogStage.close();
            
@@ -142,7 +135,7 @@ public class ModifyPartController implements Initializable {
             PartPrice.setText(Double.toString(part.getPrice()));
             PartMax.setText(Integer.toString(part.getMax()));
             PartMin.setText(Integer.toString(part.getMin()));
-            PartMachineID.setText(Integer.toString(part.getMachineId()));
+            PartOtherID.setText(Integer.toString(part.getMachineId()));
             
 
             }
@@ -155,7 +148,7 @@ public class ModifyPartController implements Initializable {
             PartPrice.setText(Double.toString(part.getPrice()));
             PartMax.setText(Integer.toString(part.getMax()));
             PartMin.setText(Integer.toString(part.getMin()));
-            CompanyName.setText(part.getCompanyId());
+            PartOtherID.setText(part.getCompanyId());
             OutscourcedRadioButton.setSelected(true);
     
     }
