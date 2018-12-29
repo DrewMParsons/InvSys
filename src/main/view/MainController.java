@@ -135,6 +135,7 @@ public class MainController implements Initializable {
         stage.initOwner(AddPartButton.getScene().getWindow());
         stage.setScene(new Scene((Parent) loader.load()));
         AddPartController controller = loader.getController();
+        controller.setData(invSys.allParts);
         //controller.initDataInHouse(part);
 
         stage.showAndWait();

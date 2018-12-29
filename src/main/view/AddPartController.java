@@ -11,6 +11,7 @@ import java.nio.file.attribute.AclEntryType;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -72,10 +73,18 @@ public class AddPartController implements Initializable {
 
     @FXML
     private Button CancelButton;
-
+    private ObservableList<Part> data;
     private Part part;
     private InHouse InHousePart;
     private Outsourced OutsourcedPart;
+
+    public ObservableList<Part> getData() {
+        return data;
+    }
+
+    public void setData(ObservableList<Part> data) {
+        this.data = data;
+    }
 
     /**
      * Initializes the controller class.
@@ -85,53 +94,65 @@ public class AddPartController implements Initializable {
         InHouseRadioButton.setSelected(true);
 
     }
-/**
- * Sets label and prompt text for an InHouse item
- * @param event 
- */
+
+    /**
+     * Sets label and prompt text for an InHouse item
+     *
+     * @param event
+     */
     @FXML
     private void InHouseRadioButtonHandler(ActionEvent event) {
         OtherID.setText("Machine ID");
         PartOtherID.setPromptText("Machine ID");
     }
-    
-    
-    /**
- * Sets label and prompt text for an Outsourced item
- * @param event 
- */
 
+    /**
+     * Sets label and prompt text for an Outsourced item
+     *
+     * @param event
+     */
     @FXML
     private void outsourcedRadioButtonHandler(ActionEvent event) {
         OtherID.setText("Company Name");
         PartOtherID.setPromptText("Company Name");
     }
-/**
- * When save button is pressed, the fields are saved into the proper object,
- * depending on which radio button is selected
- * @param event 
- */
+
+    /**
+     * When save button is pressed, the fields are saved into the proper object,
+     * depending on which radio button is selected
+     *
+     * @param event
+     */
     @FXML
     private void saveButtonHandler(ActionEvent event) {
 
-        if (InHouseRadioButton.isSelected()) {
-            InHousePart.setId(Integer.parseInt(PartID.getText()));
-            InHousePart.setName(PartName.getText());
-            InHousePart.setPrice(Double.parseDouble(PartPrice.getText()));
-            InHousePart.setStock(Integer.parseInt(PartInv.getText()));
-            InHousePart.setMin(Integer.parseInt(PartMin.getText()));
-            InHousePart.setMax(Integer.parseInt(PartMax.getText()));
-            InHousePart.setMachineId(Integer.parseInt(PartOtherID.getText()));
-
-        } else {
-            OutsourcedPart.setId(Integer.parseInt(PartID.getText()));
-            OutsourcedPart.setName(PartName.getText());
-            OutsourcedPart.setPrice(Double.parseDouble(PartPrice.getText()));
-            OutsourcedPart.setStock(Integer.parseInt(PartInv.getText()));
-            OutsourcedPart.setMin(Integer.parseInt(PartMin.getText()));
-            OutsourcedPart.setMax(Integer.parseInt(PartMax.getText()));
-            OutsourcedPart.setCompanyId(PartOtherID.getText());
-
+        String id = PartID.getText();
+        String name = PartName.getText();
+        String price = PartPrice.getText();
+        String inv = PartInv.getText();
+        String max = PartMax.getText();
+        String min = PartMin.getText();
+        String other = PartOtherID.getText();
+        if(InHouseRadioButton.isSelected()){
+            data.add(new InHouse(Integer.parseInt(id),
+                name,
+                Double.parseDouble(price),
+                Integer.parseInt(inv),
+                Integer.parseInt(max),
+                Integer.parseInt(min),
+                Integer.parseInt(other)
+        ));
+            
+        }
+        else{
+            data.add(new Outsourced(Integer.parseInt(id),
+                name,
+                Double.parseDouble(price),
+                Integer.parseInt(inv),
+                Integer.parseInt(max),
+                Integer.parseInt(min),
+                other));
+            
         }
         SaveButton.getScene().getWindow().hide();
     }
@@ -141,12 +162,12 @@ public class AddPartController implements Initializable {
         CancelButton.getScene().getWindow().hide();
 
     }
-    
+
     /**
      * initializes fields
-     * @param part 
+     *
+     * @param part
      */
-
     public void initDataInHouse(Part part) {
         this.InHousePart = (InHouse) part;
         PartID.setText("");
