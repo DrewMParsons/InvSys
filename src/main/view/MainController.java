@@ -127,7 +127,6 @@ public class MainController implements Initializable {
 
     @FXML
     void addPartButtonHandler(ActionEvent event) throws IOException {
-        //Part part = null;
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AddPart.fxml"));
 
@@ -136,12 +135,8 @@ public class MainController implements Initializable {
         stage.setScene(new Scene((Parent) loader.load()));
         AddPartController controller = loader.getController();
         controller.setData(invSys.allParts);
-        //controller.initDataInHouse(part);
 
         stage.showAndWait();
-        //invSys.systemInventory.getAllParts().add(part);
-
-        
 
     }
 
@@ -171,25 +166,23 @@ public class MainController implements Initializable {
 
     @FXML
     void modifyPartButtonHandler(ActionEvent event) throws IOException {
-       Part selectedPart = PartsTable.getSelectionModel().getSelectedItem();
-       int index = PartsTable.getSelectionModel().getSelectedIndex();
-       FXMLLoader loader = new FXMLLoader(getClass().getResource("ModifyPart.fxml"));
+        Part selectedPart = PartsTable.getSelectionModel().getSelectedItem();
+        int index = PartsTable.getSelectionModel().getSelectedIndex();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ModifyPart.fxml"));
 
         Stage stage = new Stage();
         stage.initOwner(ModifyPartButton.getScene().getWindow());
         stage.setScene(new Scene((Parent) loader.load()));
-        
 
-        
         ModifyPartController controller = loader.getController();
-        if(selectedPart instanceof InHouse){
+        controller.setData(invSys.allParts);
+        controller.setIndex(index);
+        if (selectedPart instanceof InHouse) {
             controller.initDataInHouse(selectedPart);
-        }
-        else {
+        } else {
             controller.initDataOutsourced(selectedPart);
         }
         stage.showAndWait();
-        invSys.systemInventory.getAllParts().set(index, selectedPart);
 
     }
 

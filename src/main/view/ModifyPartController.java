@@ -8,6 +8,7 @@ package main.view;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -54,10 +55,12 @@ public class ModifyPartController implements Initializable {
     private Button SaveButton;
     @FXML
     private Button CancelButton;
-    
+    private ObservableList<Part> data;
     private Part part;
     private InHouse InHousePart;
     private Outsourced OutsourcedPart;
+    private int index;
+    
 
     /**
      * Initializes the controller class.
@@ -65,6 +68,19 @@ public class ModifyPartController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+    
+
+    public ObservableList<Part> getData() {
+        return data;
+    }
+
+    public void setData(ObservableList<Part> data) {
+        this.data = data;
     }
    
     @FXML
@@ -78,43 +94,55 @@ public class ModifyPartController implements Initializable {
         OtherID.setText("Company Name");
         PartOtherID.setPromptText("Company Name");
     }
+    
+    /**
+     * When save button is pressed, saves the data entered in the fields to 
+     * a new item, and replaces the previously loaded item in the arraylist
+     * @param event
+     * @throws IOException 
+     */
 
     @FXML
     private void saveButtonHandler(ActionEvent event) throws IOException {
+        String id = PartID.getText();
+        String name = PartName.getText();
+        String price = PartPrice.getText();
+        String inv = PartInv.getText();
+        String max = PartMax.getText();
+        String min = PartMin.getText();
+        String other = PartOtherID.getText();
         if(InHouseRadioButton.isSelected()){
+            data.set(index ,new InHouse(Integer.parseInt(id),
+                name,
+                Double.parseDouble(price),
+                Integer.parseInt(inv),
+                Integer.parseInt(max),
+                Integer.parseInt(min),
+                Integer.parseInt(other)
+        ));
             
-            InHousePart.setId(Integer.parseInt(PartID.getText()));
-            InHousePart.setName(PartName.getText());
-            InHousePart.setPrice(Double.parseDouble(PartPrice.getText()));
-            InHousePart.setStock(Integer.parseInt(PartInv.getText()));
-            InHousePart.setMin(Integer.parseInt(PartMin.getText()));
-            InHousePart.setMax(Integer.parseInt(PartMax.getText()));
-            InHousePart.setMachineId(Integer.parseInt(PartOtherID.getText()));
-           
-          
         }
         else{
-            
-            OutsourcedPart.setId(Integer.parseInt(PartID.getText()));
-            OutsourcedPart.setName(PartName.getText());
-            OutsourcedPart.setPrice(Double.parseDouble(PartPrice.getText()));
-            OutsourcedPart.setStock(Integer.parseInt(PartInv.getText()));
-            OutsourcedPart.setMin(Integer.parseInt(PartMin.getText()));
-            OutsourcedPart.setMax(Integer.parseInt(PartMax.getText()));
-            OutsourcedPart.setCompanyId(PartOtherID.getText());
+            data.set(index,new Outsourced(Integer.parseInt(id),
+                name,
+                Double.parseDouble(price),
+                Integer.parseInt(inv),
+                Integer.parseInt(max),
+                Integer.parseInt(min),
+                other));
             
         }
         SaveButton.getScene().getWindow().hide();
-        
-
-        
     }
 
     @FXML
     private void cancelButtonHandler(ActionEvent event) {
         CancelButton.getScene().getWindow().hide();
     }
-   //these are your setters
+   /**
+    * Sets the fields for the part to be modified it is type InHouse
+    * @param part 
+    */
     public void initDataInHouse(Part part) {
             this.InHousePart = (InHouse) part;
             PartID.setText(Integer.toString(part.getId()));
@@ -127,6 +155,10 @@ public class ModifyPartController implements Initializable {
             InHouseRadioButton.setSelected(true);
 
             }
+     /**
+    * Sets the fields for the part to be modified it is type Outsourced
+    * @param part 
+    */
     
     public void initDataOutsourced(Part part) {
             this.OutsourcedPart = (Outsourced) part;
