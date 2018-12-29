@@ -3,6 +3,7 @@ package main.view;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import main.model.InHouse;
+import main.model.Outsourced;
 import main.model.Part;
 import main.model.Product;
 
@@ -83,29 +86,29 @@ public class MainController implements Initializable {
 
     @FXML
     private Button ExitButton;
-    
+
     private InventorySystem invSys;
-    
-    public MainController(){
-        
+
+    public MainController() {
+
     }
-    
 
     /**
-     * method enables the Modify/Delete Parts Button  after a row is selected
+     * method enables the Modify/Delete Parts Button after a row is selected
      */
-    public void clickedOnPartsTable(){
+    public void clickedOnPartsTable() {
         this.ModifyPartButton.setDisable(false);
         this.DeletePartButton.setDisable(false);
     }
+
     /**
-     * method enables the Modify/Delete Product Button  after a row is selected
+     * method enables the Modify/Delete Product Button after a row is selected
      */
-    public void clickedOnProductTable(){
+    public void clickedOnProductTable() {
         this.ModifyProductButton.setDisable(false);
         this.DeleteProductButton.setDisable(false);
     }
-    
+
     @FXML
     void ExitButtonHandler(ActionEvent event) {
         Stage stage = (Stage) ExitButton.getScene().getWindow();
@@ -121,19 +124,23 @@ public class MainController implements Initializable {
     @FXML
     void SearchProductsButtonHandler(ActionEvent event) {
     }
-    
 
     @FXML
     void addPartButtonHandler(ActionEvent event) throws IOException {
-        Parent tableViewParent = FXMLLoader.load(getClass().getResource("AddPart.fxml"));
-        Scene tableViewScene = new Scene(tableViewParent);
+        Part part = null;
 
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        AddPartController controller = new AddPartController();
-        window.setScene(tableViewScene);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("AddPart.fxml"));
+
+        Stage stage = new Stage();
+        stage.initOwner(AddPartButton.getScene().getWindow());
+        stage.setScene(new Scene((Parent) loader.load()));
+        AddPartController controller = loader.getController();
+        controller.initDataInHouse(part);
+
+        stage.showAndWait();
+        invSys.systemInventory.getAllParts().add(part);
+
         
-        
-        window.showAndWait();
 
     }
 
@@ -141,7 +148,7 @@ public class MainController implements Initializable {
     void addProductButtonHandler(ActionEvent event) throws IOException {
         Parent tableViewParent = FXMLLoader.load(getClass().getResource("AddProduct.fxml"));
         Scene tableViewScene = new Scene(tableViewParent);
-        
+
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
         window.show();
@@ -163,15 +170,25 @@ public class MainController implements Initializable {
 
     @FXML
     void modifyPartButtonHandler(ActionEvent event) throws IOException {
-        Part selectedPart = PartsTable.getSelectionModel().getSelectedItem();
-    
-        boolean okClicked = invSys.showModifyPartDialog(selectedPart);
-        if (okClicked) {
-            invSys.systemInventory.lookupPart(selectedPart.getId());
-        }
+       Part selectedPart = PartsTable.getSelectionModel().getSelectedItem();
+       int index = PartsTable.getSelectionModel().getSelectedIndex();
+       FXMLLoader loader = new FXMLLoader(getClass().getResource("ModifyPart.fxml"));
 
-    
+        Stage stage = new Stage();
+        stage.initOwner(ModifyPartButton.getScene().getWindow());
+        stage.setScene(new Scene((Parent) loader.load()));
         
+
+        
+        ModifyPartController controller = loader.getController();
+        if(selectedPart instanceof InHouse){
+            controller.initDataInHouse(selectedPart);
+        }
+        else {
+            controller.initDataOutsourced(selectedPart);
+        }
+        stage.showAndWait();
+        invSys.systemInventory.getAllParts().set(index, selectedPart);
 
     }
 
@@ -185,18 +202,14 @@ public class MainController implements Initializable {
 
         //access controller and call a method
         ModifyProductController controller = loader.getController();
-        
 
         //returns the  object that is currently selected
         controller.initData(ProductsTable.getSelectionModel().getSelectedItem());
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
-        
 
     }
-
-   
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -213,8 +226,7 @@ public class MainController implements Initializable {
         ProductPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
         ProductInv.setCellValueFactory(new PropertyValueFactory<>("Stock"));
 
-       
-        
+        //setInventorySystem(invSys);
         //Disable the modify/delete buttons until a row is selected
         this.ModifyPartButton.setDisable(true);
         this.ModifyProductButton.setDisable(true);
@@ -225,8 +237,8 @@ public class MainController implements Initializable {
     public InventorySystem getInvSys() {
         return invSys;
     }
-    
-    public void setInventorySystem(InventorySystem invSys){
+
+    public void setInventorySystem(InventorySystem invSys) {
         this.invSys = invSys;
         PartsTable.setItems(invSys.systemInventory.getAllParts());
         ProductsTable.setItems(invSys.systemInventory.getAllProducts());

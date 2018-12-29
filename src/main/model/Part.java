@@ -7,7 +7,6 @@ package main.model;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
@@ -21,8 +20,8 @@ public abstract class Part {
     private SimpleIntegerProperty Stock = new SimpleIntegerProperty(0);
     private SimpleIntegerProperty Min = new SimpleIntegerProperty(0);
     private SimpleIntegerProperty Max = new SimpleIntegerProperty(0);
-    
 
+    
     public int getId() {
         return Id.get();
     }

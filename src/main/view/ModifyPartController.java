@@ -5,23 +5,17 @@
  */
 package main.view;
 
-import com.sun.deploy.cache.Cache;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.stage.Stage;
 import main.model.InHouse;
 import main.model.Outsourced;
 import main.model.Part;
@@ -34,7 +28,7 @@ import main.model.Part;
 public class ModifyPartController implements Initializable {
 
     @FXML
-    private RadioButton InhouseRadioButton;
+    private RadioButton InHouseRadioButton;
     @FXML
     private ToggleGroup AddPart;
     @FXML
@@ -60,8 +54,7 @@ public class ModifyPartController implements Initializable {
     private Button SaveButton;
     @FXML
     private Button CancelButton;
-    private Stage dialogStage;
-    private boolean okClicked = false;
+    
     private Part part;
     private InHouse InHousePart;
     private Outsourced OutsourcedPart;
@@ -73,14 +66,9 @@ public class ModifyPartController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
-    public void setDialogStage(Stage dialogStage){
-        this.dialogStage = dialogStage;
-    }
-    public boolean isOkClicked(){
-        return okClicked;
-    }
+   
     @FXML
-    private void InhouseRadioButtonHandler(ActionEvent event) {
+    private void InHouseRadioButtonHandler(ActionEvent event) {
         OtherID.setText("Machine ID");
         PartOtherID.setPromptText("Machine ID");
     }
@@ -93,7 +81,8 @@ public class ModifyPartController implements Initializable {
 
     @FXML
     private void saveButtonHandler(ActionEvent event) throws IOException {
-        if(InhouseRadioButton.isSelected()){
+        if(InHouseRadioButton.isSelected()){
+            
             InHousePart.setId(Integer.parseInt(PartID.getText()));
             InHousePart.setName(PartName.getText());
             InHousePart.setPrice(Double.parseDouble(PartPrice.getText()));
@@ -101,11 +90,11 @@ public class ModifyPartController implements Initializable {
             InHousePart.setMin(Integer.parseInt(PartMin.getText()));
             InHousePart.setMax(Integer.parseInt(PartMax.getText()));
             InHousePart.setMachineId(Integer.parseInt(PartOtherID.getText()));
-            okClicked = true;
-            dialogStage.close();
+           
           
         }
         else{
+            
             OutsourcedPart.setId(Integer.parseInt(PartID.getText()));
             OutsourcedPart.setName(PartName.getText());
             OutsourcedPart.setPrice(Double.parseDouble(PartPrice.getText()));
@@ -113,10 +102,9 @@ public class ModifyPartController implements Initializable {
             OutsourcedPart.setMin(Integer.parseInt(PartMin.getText()));
             OutsourcedPart.setMax(Integer.parseInt(PartMax.getText()));
             OutsourcedPart.setCompanyId(PartOtherID.getText());
-            okClicked = true;
-            dialogStage.close();
-           
+            
         }
+        SaveButton.getScene().getWindow().hide();
         
 
         
@@ -124,31 +112,31 @@ public class ModifyPartController implements Initializable {
 
     @FXML
     private void cancelButtonHandler(ActionEvent event) {
-        dialogStage.close();
+        CancelButton.getScene().getWindow().hide();
     }
-   //these are your setPerson
-    public void initDataInHouse(InHouse part) {
-            this.InHousePart = part;
+   //these are your setters
+    public void initDataInHouse(Part part) {
+            this.InHousePart = (InHouse) part;
             PartID.setText(Integer.toString(part.getId()));
             PartName.setText(part.getName());
             PartInv.setText(Integer.toString(part.getStock()));
             PartPrice.setText(Double.toString(part.getPrice()));
             PartMax.setText(Integer.toString(part.getMax()));
             PartMin.setText(Integer.toString(part.getMin()));
-            PartOtherID.setText(Integer.toString(part.getMachineId()));
-            
+            PartOtherID.setText(Integer.toString(InHousePart.getMachineId()));
+            InHouseRadioButton.setSelected(true);
 
             }
     
-    public void initDataOutsourced(Outsourced part) {
-            this.OutsourcedPart = part;
+    public void initDataOutsourced(Part part) {
+            this.OutsourcedPart = (Outsourced) part;
             PartID.setText(Integer.toString(part.getId()));
             PartName.setText(part.getName());
             PartInv.setText(Integer.toString(part.getStock()));
             PartPrice.setText(Double.toString(part.getPrice()));
             PartMax.setText(Integer.toString(part.getMax()));
             PartMin.setText(Integer.toString(part.getMin()));
-            PartOtherID.setText(part.getCompanyId());
+            PartOtherID.setText(OutsourcedPart.getCompanyId());
             OutscourcedRadioButton.setSelected(true);
     
     }

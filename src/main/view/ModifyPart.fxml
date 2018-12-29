@@ -32,7 +32,7 @@
                               <Insets left="20.0" top="15.0" />
                            </HBox.margin>
                         </Label>
-                        <RadioButton fx:id="InhouseRadioButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#InhouseRadioButtonHandler" prefHeight="17.0" prefWidth="70.0" selected="true" text="In-House">
+                        <RadioButton fx:id="InHouseRadioButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#InHouseRadioButtonHandler" prefHeight="17.0" prefWidth="70.0" text="In-House">
                            <HBox.margin>
                               <Insets top="20.0" />
                            </HBox.margin>

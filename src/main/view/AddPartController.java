@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.attribute.AclEntryType;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,11 +22,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
-import main.model.InHouse;
-import main.model.Outsourced;
-import main.model.Part;
+import main.model.*;
 
 /**
  * FXML Controller class
@@ -34,64 +35,63 @@ import main.model.Part;
 public class AddPartController implements Initializable {
 
     @FXML
-    private RadioButton InhouseRadioButton;
+    private RadioButton InHouseRadioButton;
+
     @FXML
     private ToggleGroup AddPart;
+
     @FXML
     private RadioButton OutscourcedRadioButton;
+
     @FXML
     private TextField PartID;
+
     @FXML
     private TextField PartName;
+
     @FXML
     private TextField PartInv;
+
     @FXML
     private TextField PartPrice;
+
     @FXML
     private TextField PartMax;
+
     @FXML
     private TextField PartMin;
+
     @FXML
     private TextField PartOtherID;
+
     @FXML
     private Label OtherID;
+
     @FXML
     private Button SaveButton;
+
     @FXML
     private Button CancelButton;
-    
-    private Stage addPartStage;
-    private Part newPart;
+
+    private Part part;
+    private InHouse InHousePart;
+    private Outsourced OutsourcedPart;
+   
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        addNewPart(null);
-    }
-    public void setPart(Part part) {
-        this.newPart = part;
+        InHouseRadioButton.setSelected(true);
         
-    }
-    private void addNewPart(Part part) {
-        String id = PartID.getText();
-        String name = PartName.getText();
-        String inv = PartInv.getText();
-        String price = PartPrice.getText();
-        String max = PartMax.getText();
-        String min = PartMin.getText();
-        if (InhouseRadioButton.isSelected()) {
-            
-            String machID = PartOtherID.getText();
-            
-        } else {
-            String compID = PartOtherID.getText();
-        }
         
+        
+
     }
 
     @FXML
-    private void InhouseRadioButtonHandler(ActionEvent event) {
+    private void InHouseRadioButtonHandler(ActionEvent event) {
         OtherID.setText("Machine ID");
         PartOtherID.setPromptText("Machine ID");
     }
@@ -104,39 +104,58 @@ public class AddPartController implements Initializable {
 
     @FXML
     private void saveButtonHandler(ActionEvent event) throws IOException {
-//        FXMLLoader loader = new FXMLLoader();
-//        loader.setLocation((getClass().getResource("Main.fxml")));
-//        Parent tableViewParent = loader.load();
-//
-//        Scene tableViewScene = new Scene(tableViewParent);
-//
-//        //access controller and call a method
-//        MainController controller = loader.getController();
-//        addNewPart(newPart);
-//        controller.allParts.add(newPart);
-//
-//        
-//
-//        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        window.setScene(tableViewScene);
-//        window.show();
+        
+        if (InHouseRadioButton.isSelected()) {
+            InHousePart.setId(Integer.parseInt(PartID.getText()));
+            InHousePart.setName(PartName.getText());
+            InHousePart.setPrice(Double.parseDouble(PartPrice.getText()));
+            InHousePart.setStock(Integer.parseInt(PartInv.getText()));
+            InHousePart.setMin(Integer.parseInt(PartMin.getText()));
+            InHousePart.setMax(Integer.parseInt(PartMax.getText()));
+            InHousePart.setMachineId(Integer.parseInt(PartOtherID.getText()));
 
+        } else {
+            OutsourcedPart.setId(Integer.parseInt(PartID.getText()));
+            OutsourcedPart.setName(PartName.getText());
+            OutsourcedPart.setPrice(Double.parseDouble(PartPrice.getText()));
+            OutsourcedPart.setStock(Integer.parseInt(PartInv.getText()));
+            OutsourcedPart.setMin(Integer.parseInt(PartMin.getText()));
+            OutsourcedPart.setMax(Integer.parseInt(PartMax.getText()));
+            OutsourcedPart.setCompanyId(PartOtherID.getText());
+
+        }
+        SaveButton.getScene().getWindow().hide();
     }
-    
-        
-        
-    
 
     @FXML
     private void cancelButtonHandler(ActionEvent event) throws IOException {
-        Parent tableViewParent = FXMLLoader.load(getClass().getResource("Main.fxml"));
-        Scene tableViewScene = new Scene(tableViewParent); 
- 
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(tableViewScene);
-        window.show();
-        
-        
+        CancelButton.getScene().getWindow().hide();
+
     }
-    
+
+    public void initDataInHouse(Part part) {
+        this.InHousePart = (InHouse) part;
+        PartID.setText("");
+        PartName.setText("");
+        PartInv.setText("");
+        PartPrice.setText("");
+        PartMax.setText("");
+        PartMin.setText("");
+        PartOtherID.setText("");
+
+    }
+
+    public void initDataOutsourced(Part part) {
+        this.OutsourcedPart = (Outsourced) part;
+        PartID.setText("");
+        PartName.setText("");
+        PartInv.setText("");
+        PartPrice.setText("");
+        PartMax.setText("");
+        PartMin.setText("");
+        PartOtherID.setText("");
+        OutscourcedRadioButton.setSelected(true);
+
+    }
+
 }

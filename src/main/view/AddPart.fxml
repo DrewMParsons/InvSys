@@ -32,7 +32,7 @@
                               <Insets left="20.0" top="15.0" />
                            </HBox.margin>
                         </Label>
-                        <RadioButton fx:id="InhouseRadioButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#InhouseRadioButtonHandler" prefHeight="17.0" prefWidth="70.0" selected="true" text="In-House">
+                        <RadioButton fx:id="InHouseRadioButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#InHouseRadioButtonHandler" prefHeight="17.0" prefWidth="70.0" text="In-House">
                            <HBox.margin>
                               <Insets top="20.0" />
                            </HBox.margin>
@@ -113,7 +113,7 @@
                               <Insets left="10.0" />
                            </GridPane.margin>
                         </Label>
-                        <TextField fx:id="PartID" alignment="CENTER" promptText="Auto Gen-Disabled" GridPane.columnIndex="1">
+                        <TextField fx:id="PartID" alignment="CENTER" promptText="ID" GridPane.columnIndex="1">
                            <font>
                               <Font name="System Bold Italic" size="12.0" />
                            </font>

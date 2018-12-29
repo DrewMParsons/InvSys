@@ -25,8 +25,8 @@ import main.model.Product;
  */
 public class InventorySystem extends Application {
     private Stage primaryStage;
-    private ObservableList<Part> allParts = FXCollections.observableArrayList();
-    private ObservableList<Product> allProducts = FXCollections.observableArrayList();
+    public ObservableList<Part> allParts = FXCollections.observableArrayList();
+    public ObservableList<Product> allProducts = FXCollections.observableArrayList();
     public Inventory systemInventory = new Inventory(allParts, allProducts); 
     
     public InventorySystem(){
@@ -35,15 +35,16 @@ public class InventorySystem extends Application {
 
         systemInventory.addPart(new Outsourced(0, "chain", 5, 1, 10, 2, "ChainDudes"));
         systemInventory.addPart(new InHouse(1, "horn", 2, 3, 1, 90, 1));
-
+        systemInventory.addPart(new Outsourced(3, "wheel", 10, 5, 20, 2, "TireDudes"));
+        systemInventory.addPart(new InHouse(4, "seat", 7, 2, 1, 10, 1));
         
     
 
     //dummy info to test Product table
     
         systemInventory.addProduct(new Product(1, "bike", 500, 4, 1, 20));
-        systemInventory.addProduct(new Product(2, "trike", 400, 1, 1, 3));
-
+        systemInventory.addProduct(new Product(2, "trike", 400, 1, 1, 15));
+        systemInventory.addProduct(new Product(3, "uni", 100, 2, 1, 10));
         
 
     
@@ -87,45 +88,6 @@ public class InventorySystem extends Application {
         primaryStage.show();
     }
     
-    /**
- * Opens a dialog to edit details for the specified person. If the user
- * clicks OK, the changes are saved into the provided person object and true
- * is returned.
- * 
- * @param person the person object to be edited
- * @return true if the user clicked OK, false otherwise.
- */
-public boolean showModifyPartDialog(Part part) {
-    try {
-        // Load the fxml file and create a new stage for the popup dialog.
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(InventorySystem.class.getResource("ModifyPart.fxml"));
-        AnchorPane page = (AnchorPane) loader.load();
 
-        // Create the dialog Stage.
-        Stage dialogStage = new Stage();
-        dialogStage.setTitle("Modify Part");
-        dialogStage.initModality(Modality.WINDOW_MODAL);
-        dialogStage.initOwner(primaryStage);
-        Scene scene = new Scene(page);
-        dialogStage.setScene(scene);
-
-        // Set the part into the controller.
-        ModifyPartController controller = loader.getController();
-        controller.setDialogStage(dialogStage);
-        if(part instanceof InHouse)
-            controller.initDataInHouse((InHouse) part);
-        else
-            controller.initDataOutsourced((Outsourced) part);
-
-        // Show the dialog and wait until the user closes it
-        dialogStage.showAndWait();
-
-        return controller.isOkClicked();
-    } catch (IOException e) {
-        e.printStackTrace();
-        return false;
-    }
-}
     
 }
