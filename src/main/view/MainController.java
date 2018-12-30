@@ -160,7 +160,7 @@ public class MainController implements Initializable {
         stage.initOwner(AddPartButton.getScene().getWindow());
         stage.setScene(new Scene((Parent) loader.load()));
         AddPartController controller = loader.getController();
-        controller.setData(invSys.allParts);
+        controller.setData(invSys.systemInventory);
 
         stage.showAndWait();
 
@@ -201,7 +201,7 @@ public class MainController implements Initializable {
         stage.setScene(new Scene((Parent) loader.load()));
 
         ModifyPartController controller = loader.getController();
-        controller.setData(invSys.allParts);
+        controller.setData(invSys.systemInventory);
         controller.setIndex(index);
         if (selectedPart instanceof InHouse) {
             controller.initDataInHouse(selectedPart);

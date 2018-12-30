@@ -5,6 +5,7 @@
  */
 package main.model;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import javafx.collections.ObservableList;
 
 /**
@@ -15,7 +16,8 @@ public class Inventory {
 
     private ObservableList<Part> allParts;
     private ObservableList<Product> allProducts;
-
+    private static AtomicInteger IdGenerator = new AtomicInteger(1000);
+    
     public Inventory(ObservableList<Part> allParts, ObservableList<Product> allProducts) {
         this.allParts = allParts;
         this.allProducts = allProducts;
@@ -23,7 +25,11 @@ public class Inventory {
 
     public void addPart(Part part) {
         allParts.add(part);
+        part.setId(IdGenerator.getAndIncrement());
 
+    }
+    public void modifyPart(Part part){
+        allParts.add(part);
     }
 
     public void addProduct(Product product) {

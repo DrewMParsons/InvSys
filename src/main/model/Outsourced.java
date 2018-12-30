@@ -20,7 +20,17 @@ public class Outsourced extends Part{
 
     
    //constructor
-    public Outsourced(int id, String name, double price, int stock, int min, int max, String companyId)
+    public Outsourced( String name, double price, int stock, int min, int max, String companyId)
+    {
+        
+        setName(name);
+        setPrice(price);
+        setStock(stock);
+        setMin(min);
+        setMax(max);
+        setCompanyId(companyId);
+    }
+    public Outsourced(int id,String name, double price, int stock, int min, int max, String companyId)
     {
         setId(id);
         setName(name);

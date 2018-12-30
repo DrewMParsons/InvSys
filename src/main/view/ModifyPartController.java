@@ -18,6 +18,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import main.model.InHouse;
+import main.model.Inventory;
 import main.model.Outsourced;
 import main.model.Part;
 
@@ -55,7 +56,7 @@ public class ModifyPartController implements Initializable {
     private Button SaveButton;
     @FXML
     private Button CancelButton;
-    private ObservableList<Part> data;
+    private Inventory data;
     private Part part;
     private InHouse InHousePart;
     private Outsourced OutsourcedPart;
@@ -73,15 +74,17 @@ public class ModifyPartController implements Initializable {
     public void setIndex(int index) {
         this.index = index;
     }
-    
 
-    public ObservableList<Part> getData() {
+    public Inventory getData() {
         return data;
     }
 
-    public void setData(ObservableList<Part> data) {
+    public void setData(Inventory data) {
         this.data = data;
     }
+    
+
+    
    
     @FXML
     private void InHouseRadioButtonHandler(ActionEvent event) {
@@ -111,8 +114,10 @@ public class ModifyPartController implements Initializable {
         String max = PartMax.getText();
         String min = PartMin.getText();
         String other = PartOtherID.getText();
+        data.getAllParts().remove(index);
         if(InHouseRadioButton.isSelected()){
-            data.set(index ,new InHouse(Integer.parseInt(id),
+            
+            data.modifyPart(new InHouse(Integer.parseInt(id),
                 name,
                 Double.parseDouble(price),
                 Integer.parseInt(inv),
@@ -123,7 +128,7 @@ public class ModifyPartController implements Initializable {
             
         }
         else{
-            data.set(index,new Outsourced(Integer.parseInt(id),
+            data.modifyPart(new Outsourced(Integer.parseInt(id),
                 name,
                 Double.parseDouble(price),
                 Integer.parseInt(inv),

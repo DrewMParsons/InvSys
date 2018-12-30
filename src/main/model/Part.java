@@ -20,7 +20,7 @@ public abstract class Part {
     private SimpleIntegerProperty Stock = new SimpleIntegerProperty(0);
     private SimpleIntegerProperty Min = new SimpleIntegerProperty(0);
     private SimpleIntegerProperty Max = new SimpleIntegerProperty(0);
-
+    
     
     public int getId() {
         return Id.get();

@@ -73,18 +73,20 @@ public class AddPartController implements Initializable {
 
     @FXML
     private Button CancelButton;
-    private ObservableList<Part> data;
+    private Inventory data;
     private Part part;
     private InHouse InHousePart;
     private Outsourced OutsourcedPart;
 
-    public ObservableList<Part> getData() {
+    public Inventory getData() {
         return data;
     }
 
-    public void setData(ObservableList<Part> data) {
+    public void setData(Inventory data) {
         this.data = data;
     }
+
+    
 
     /**
      * Initializes the controller class.
@@ -134,7 +136,7 @@ public class AddPartController implements Initializable {
         String min = PartMin.getText();
         String other = PartOtherID.getText();
         if(InHouseRadioButton.isSelected()){
-            data.add(new InHouse(Integer.parseInt(id),
+            data.addPart(new InHouse(
                 name,
                 Double.parseDouble(price),
                 Integer.parseInt(inv),
@@ -145,7 +147,7 @@ public class AddPartController implements Initializable {
             
         }
         else{
-            data.add(new Outsourced(Integer.parseInt(id),
+            data.addPart(new Outsourced(
                 name,
                 Double.parseDouble(price),
                 Integer.parseInt(inv),
