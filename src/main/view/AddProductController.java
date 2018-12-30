@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -75,7 +76,7 @@ public class AddProductController implements Initializable {
     private TextField SearchField;
 
     private Inventory data;
-    private ObservableList<Part> parts;
+    private ObservableList<Part> parts= FXCollections.observableArrayList();;
     
 
     public ObservableList<Part> getParts() {
@@ -139,6 +140,7 @@ public class AddProductController implements Initializable {
         String price = GetProductPrice.getText();
         String max = GetProductMax.getText();
         String min = GetProductMin.getText();
+        
         parts.addAll(DeletePartTable.getItems());
         
         data.addProduct(new Product(name,

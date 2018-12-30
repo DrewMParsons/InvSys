@@ -217,20 +217,19 @@ public class MainController implements Initializable {
 
     @FXML
     void modifyProductButtonHandler(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation((getClass().getResource("ModifyProduct.fxml")));
-        Parent tableViewParent = loader.load();
+        Product selectedProduct = ProductsTable.getSelectionModel().getSelectedItem();
+        int index = ProductsTable.getSelectionModel().getSelectedIndex();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ModifyProduct.fxml"));
 
-        Scene tableViewScene = new Scene(tableViewParent);
+        Stage stage = new Stage();
+        stage.initOwner(ModifyProductButton.getScene().getWindow());
+        stage.setScene(new Scene((Parent) loader.load()));
 
-        //access controller and call a method
         ModifyProductController controller = loader.getController();
-
-        //returns the  object that is currently selected
-        controller.initData(ProductsTable.getSelectionModel().getSelectedItem());
-
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(tableViewScene);
+        controller.setData(invSys.systemInventory);
+        controller.setIndex(index);;
+        controller.initData(selectedProduct);
+        stage.showAndWait();
 
     }
 

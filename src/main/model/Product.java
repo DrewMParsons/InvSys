@@ -8,6 +8,7 @@ package main.model;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
@@ -21,7 +22,7 @@ public class Product {
     private SimpleIntegerProperty Stock;
     private SimpleIntegerProperty Min;
     private SimpleIntegerProperty Max;
-    private ObservableList<Part> associatedParts;
+    public ObservableList<Part> associatedParts;
 
     public Product(int id, SimpleStringProperty name, SimpleIntegerProperty stock, SimpleDoubleProperty price,  SimpleIntegerProperty min, SimpleIntegerProperty max, ObservableList<Part> associatedParts) {
         this.Id = id;
@@ -33,7 +34,15 @@ public class Product {
         this.associatedParts = associatedParts;
     }
     
-    
+    public Product(int id,String name, int stock,double price,int min, int max, ObservableList<Part> associatedParts){
+        setId(id);
+        setName(name);
+        setPrice(new SimpleDoubleProperty(price));
+        setStock(new SimpleIntegerProperty(stock));
+        setMin(new SimpleIntegerProperty(min));
+        setMax(new SimpleIntegerProperty(max));
+        setAssociatedParts(associatedParts);
+    }
     public Product(String name, int stock,double price,int min, int max, ObservableList<Part> associatedParts){
         
         setName(name);

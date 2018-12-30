@@ -6,7 +6,11 @@
 package main.view;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,6 +18,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import main.model.Inventory;
+import main.model.Part;
 import main.model.Product;
 
 /**
@@ -36,27 +43,27 @@ public class ModifyProductController implements Initializable {
     @FXML
     private TextField GetProductMin;
     @FXML
-    private TableView<?> AddProductTable;
+    private TableView<Part> AddPartTable;
     @FXML
-    private TableColumn<?, ?> AddProductID;
+    private TableColumn<?, ?> AddPartID;
     @FXML
-    private TableColumn<?, ?> AddProductName;
+    private TableColumn<?, ?> AddPartName;
     @FXML
-    private TableColumn<?, ?> AddProductInv;
+    private TableColumn<?, ?> AddPartInv;
     @FXML
-    private TableColumn<?, ?> AddProductPrice;
+    private TableColumn<?, ?> AddPartPrice;
     @FXML
     private Button AddButton;
     @FXML
-    private TableView<?> DeleteProductTable;
+    private TableView<Part> DeletePartTable;
     @FXML
-    private TableColumn<?, ?> DeleteProductID;
+    private TableColumn<?, ?> DeletePartID;
     @FXML
-    private TableColumn<?, ?> DeleteProductName;
+    private TableColumn<?, ?> DeletePartName;
     @FXML
-    private TableColumn<?, ?> DeleteProductInv;
+    private TableColumn<?, ?> DeletePartInv;
     @FXML
-    private TableColumn<?, ?> DeleteProductPrice;
+    private TableColumn<?, ?> DeletePartPrice;
     @FXML
     private Button DeleteButton;
     @FXML
@@ -67,27 +74,97 @@ public class ModifyProductController implements Initializable {
     private Button SearchButton;
     @FXML
     private TextField SearchField;
-    
+
+    private int index;
     private Product product;
+    private Inventory data;
+    private ObservableList<Part> parts= FXCollections.observableArrayList();;
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+    
+
+    public ObservableList<Part> getParts() {
+        return parts;
+    }
+
+    public void setParts(ObservableList<Part> parts) {
+        this.parts = parts;
+    }
+    
+    
+    
+    public Inventory getData() {
+        return data;
+    }
+
+    public void setData(Inventory data) {
+        this.data = data;
+        AddPartTable.setItems(data.getAllParts());
+        
+
+    }
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        //set up columns for Add Part Table
+        AddPartID.setCellValueFactory(new PropertyValueFactory<>("Id"));
+        AddPartName.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        AddPartPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
+        AddPartInv.setCellValueFactory(new PropertyValueFactory<>("Stock"));
+
+        //set up columns for Delete Part Table
+        DeletePartID.setCellValueFactory(new PropertyValueFactory<>("Id"));
+        DeletePartName.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        DeletePartPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
+        DeletePartInv.setCellValueFactory(new PropertyValueFactory<>("Stock"));
+        
+    }
 
     @FXML
     private void addButtonHandler(ActionEvent event) {
+        Part selectedPart = AddPartTable.getSelectionModel().getSelectedItem();
+        DeletePartTable.getItems().add(selectedPart);
+        
     }
 
     @FXML
     private void deleteButtonHandler(ActionEvent event) {
+
+        DeletePartTable.getItems().remove(
+                DeletePartTable.getSelectionModel().getSelectedItem());
     }
 
     @FXML
     private void saveButtonHandler(ActionEvent event) {
+        String id = productID.getText();
+        String name = GetProductName.getText();
+        String inv = GetProductInv.getText();
+        String price = GetProductPrice.getText();
+        String max = GetProductMax.getText();
+        String min = GetProductMin.getText();
+        
+        parts.addAll(DeletePartTable.getItems());
+        data.getAllProducts().remove(index);
+        data.modifyProduct(new Product(Integer.parseInt(id),
+                name,
+                Integer.parseInt(inv),
+                Double.parseDouble(price),
+                Integer.parseInt(max),
+                Integer.parseInt(min),
+                parts));
+        
+        
+        SaveButton.getScene().getWindow().hide();
+
     }
 
     @FXML
@@ -99,6 +176,9 @@ public class ModifyProductController implements Initializable {
     private void searchButtonHandler(ActionEvent event) {
     }
 
+
+
+
     void initData(Product product) {
         this.product = product;
             productID.setText(Integer.toString(product.getId()));
@@ -107,6 +187,7 @@ public class ModifyProductController implements Initializable {
             GetProductPrice.setText(Double.toString(product.getPrice()));
             GetProductMax.setText(Integer.toString(product.getMax()));
             GetProductMin.setText(Integer.toString(product.getMin()));
+            //DeletePartTable.setItems(product.getAssociatedParts());
     }
     
 }
