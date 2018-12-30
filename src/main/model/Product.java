@@ -23,17 +23,28 @@ public class Product {
     private SimpleIntegerProperty Max;
     private ObservableList<Part> associatedParts;
 
-    public Product(int id, SimpleStringProperty name, SimpleDoubleProperty price, SimpleIntegerProperty stock, SimpleIntegerProperty min, SimpleIntegerProperty max, ObservableList<Part> associatedParts) {
+    public Product(int id, SimpleStringProperty name, SimpleIntegerProperty stock, SimpleDoubleProperty price,  SimpleIntegerProperty min, SimpleIntegerProperty max, ObservableList<Part> associatedParts) {
         this.Id = id;
         this.Name = name;
-        this.Price = price;
         this.Stock = stock;
+        this.Price = price;
         this.Min = min;
         this.Max = max;
         this.associatedParts = associatedParts;
     }
     
-    public Product(int id, String name, double price, int stock, int min, int max){
+    
+    public Product(String name, int stock,double price,int min, int max){
+        
+        setName(name);
+        setPrice(new SimpleDoubleProperty(price));
+        setStock(new SimpleIntegerProperty(stock));
+        setMin(new SimpleIntegerProperty(min));
+        setMax(new SimpleIntegerProperty(max));
+        
+    }
+    
+    public Product(int id, String name, int stock,double price,  int min, int max){
         setId(id);
         setName(name);
         setPrice(new SimpleDoubleProperty(price));

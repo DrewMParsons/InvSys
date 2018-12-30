@@ -165,34 +165,7 @@ public class AddPartController implements Initializable {
 
     }
 
-    /**
-     * initializes fields
-     *
-     * @param part
-     */
-    public void initDataInHouse(Part part) {
-        this.InHousePart = (InHouse) part;
-        PartID.setText("");
-        PartName.setText("");
-        PartInv.setText("");
-        PartPrice.setText("");
-        PartMax.setText("");
-        PartMin.setText("");
-        PartOtherID.setText("");
-
-    }
-
-    public void initDataOutsourced(Part part) {
-        this.OutsourcedPart = (Outsourced) part;
-        PartID.setText("");
-        PartName.setText("");
-        PartInv.setText("");
-        PartPrice.setText("");
-        PartMax.setText("");
-        PartMin.setText("");
-        PartOtherID.setText("");
-        OutscourcedRadioButton.setSelected(true);
-
-    }
+ 
+    
 
 }

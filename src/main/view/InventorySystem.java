@@ -33,14 +33,14 @@ public class InventorySystem extends Application {
         //dummy info to test Parts table
 
         systemInventory.addPart(new Outsourced("chain", 5, 1, 10, 2, "ChainDudes"));
-        systemInventory.addPart(new InHouse( "horn", 2, 3, 1, 90, 1));
+        systemInventory.addPart(new InHouse("horn", 2, 3, 1, 90, 1));
         systemInventory.addPart(new Outsourced("wheel", 10, 5, 20, 2, "TireDudes"));
-        systemInventory.addPart(new InHouse( "seat", 7, 2, 1, 10, 1));
+        systemInventory.addPart(new InHouse("seat", 7, 2, 1, 10, 1));
 
         //dummy info to test Product table
-        systemInventory.addProduct(new Product(1, "bike", 500, 4, 1, 20));
-        systemInventory.addProduct(new Product(2, "trike", 400, 1, 1, 15));
-        systemInventory.addProduct(new Product(3, "uni", 100, 2, 1, 10));
+        systemInventory.addProduct(new Product("bike", 5, 400, 1, 20));
+        systemInventory.addProduct(new Product("trike", 5, 1000.0, 2, 20));
+        systemInventory.addProduct(new Product("uni", 10, 200.0, 1, 10));
 
     }
 

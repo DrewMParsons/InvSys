@@ -168,12 +168,15 @@ public class MainController implements Initializable {
 
     @FXML
     void addProductButtonHandler(ActionEvent event) throws IOException {
-        Parent tableViewParent = FXMLLoader.load(getClass().getResource("AddProduct.fxml"));
-        Scene tableViewScene = new Scene(tableViewParent);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("AddProduct.fxml"));
 
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(tableViewScene);
-        window.show();
+        Stage stage = new Stage();
+        stage.initOwner(AddProductButton.getScene().getWindow());
+        stage.setScene(new Scene((Parent) loader.load()));
+        AddProductController controller = loader.getController();
+        controller.setData(invSys.systemInventory);
+
+        stage.showAndWait();
     }
 
     @FXML

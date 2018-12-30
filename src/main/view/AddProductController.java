@@ -14,6 +14,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import main.model.Inventory;
+import main.model.Product;
 
 /**
  * FXML Controller class
@@ -67,13 +69,23 @@ public class AddProductController implements Initializable {
     @FXML
     private TextField SearchField;
 
+    private Inventory data;
+
+    public Inventory getData() {
+        return data;
+    }
+
+    public void setData(Inventory data) {
+        this.data = data;
+    }
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     private void addButtonHandler(ActionEvent event) {
@@ -85,14 +97,28 @@ public class AddProductController implements Initializable {
 
     @FXML
     private void saveButtonHandler(ActionEvent event) {
+        String name = GetProductName.getText();
+        String inv = GetProductInv.getText();
+        String price = GetProductPrice.getText();
+        String max = GetProductMax.getText();
+        String min = GetProductMin.getText();
+
+        data.addProduct(new Product(name,
+                Integer.parseInt(inv),
+                Double.parseDouble(price),
+                Integer.parseInt(max),
+                Integer.parseInt(min)));
+        SaveButton.getScene().getWindow().hide();
+
     }
 
     @FXML
     private void cancelButtonHandler(ActionEvent event) {
+        CancelButton.getScene().getWindow().hide();
     }
 
     @FXML
     private void searchButtonHandler(ActionEvent event) {
     }
-    
+
 }

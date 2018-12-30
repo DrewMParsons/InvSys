@@ -92,6 +92,7 @@ public class ModifyProductController implements Initializable {
 
     @FXML
     private void cancelButtonHandler(ActionEvent event) {
+        CancelButton.getScene().getWindow().hide();
     }
 
     @FXML

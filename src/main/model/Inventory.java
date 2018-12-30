@@ -17,6 +17,7 @@ public class Inventory {
     private ObservableList<Part> allParts;
     private ObservableList<Product> allProducts;
     private static AtomicInteger IdGenerator = new AtomicInteger(1000);
+    private static AtomicInteger ProductIdGenerator = new AtomicInteger(0);
     
     public Inventory(ObservableList<Part> allParts, ObservableList<Product> allProducts) {
         this.allParts = allParts;
@@ -30,11 +31,16 @@ public class Inventory {
     }
     public void modifyPart(Part part){
         allParts.add(part);
+        
     }
 
     public void addProduct(Product product) {
         allProducts.add(product);
+        product.setId(ProductIdGenerator.getAndIncrement());
 
+    }
+    public void modifyProduct(Product product){
+        allProducts.add(product);
     }
 
     public Part lookupPart(String name) {
