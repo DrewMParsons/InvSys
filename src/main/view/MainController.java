@@ -120,7 +120,7 @@ public class MainController implements Initializable {
         Part search = invSys.systemInventory.lookupPart(SearchPartsField.getText());
         if (search != null) {
             PartsTable.scrollTo(search);
-            
+            PartsTable.getSelectionModel().select(search);
 
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -138,6 +138,7 @@ public class MainController implements Initializable {
         Product search = invSys.systemInventory.lookupProduct(SearchProductsField.getText());
         if (search != null) {
             ProductsTable.scrollTo(search);
+            ProductsTable.getSelectionModel().select(search);
             
 
         } else {
