@@ -57,7 +57,7 @@ public class ModifyPartController implements Initializable {
     @FXML
     private Button CancelButton;
     private Inventory data;
-    private Part part;
+    
     private InHouse InHousePart;
     private Outsourced OutsourcedPart;
     private int index;

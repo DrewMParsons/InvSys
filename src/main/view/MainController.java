@@ -175,7 +175,7 @@ public class MainController implements Initializable {
         stage.setScene(new Scene((Parent) loader.load()));
         AddProductController controller = loader.getController();
         controller.setData(invSys.systemInventory);
-
+        
         stage.showAndWait();
     }
 
@@ -249,7 +249,7 @@ public class MainController implements Initializable {
         ProductPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
         ProductInv.setCellValueFactory(new PropertyValueFactory<>("Stock"));
 
-        //setInventorySystem(invSys);
+        
         //Disable the modify/delete buttons until a row is selected
         this.ModifyPartButton.setDisable(true);
         this.ModifyProductButton.setDisable(true);

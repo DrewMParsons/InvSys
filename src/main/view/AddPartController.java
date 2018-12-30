@@ -74,9 +74,8 @@ public class AddPartController implements Initializable {
     @FXML
     private Button CancelButton;
     private Inventory data;
-    private Part part;
-    private InHouse InHousePart;
-    private Outsourced OutsourcedPart;
+    
+    
 
     public Inventory getData() {
         return data;

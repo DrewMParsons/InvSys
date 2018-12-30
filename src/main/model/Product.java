@@ -34,6 +34,15 @@ public class Product {
     }
     
     
+    public Product(String name, int stock,double price,int min, int max, ObservableList<Part> associatedParts){
+        
+        setName(name);
+        setPrice(new SimpleDoubleProperty(price));
+        setStock(new SimpleIntegerProperty(stock));
+        setMin(new SimpleIntegerProperty(min));
+        setMax(new SimpleIntegerProperty(max));
+        setAssociatedParts(associatedParts);
+    }
     public Product(String name, int stock,double price,int min, int max){
         
         setName(name);
@@ -53,8 +62,7 @@ public class Product {
         setMax(new SimpleIntegerProperty(max));
         
     }
-    
-    
+
 
     public int getId() {
         return Id;
