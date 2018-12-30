@@ -187,7 +187,7 @@ public class ModifyProductController implements Initializable {
             GetProductPrice.setText(Double.toString(product.getPrice()));
             GetProductMax.setText(Integer.toString(product.getMax()));
             GetProductMin.setText(Integer.toString(product.getMin()));
-            //DeletePartTable.setItems(product.getAssociatedParts());
+            DeletePartTable.setItems(product.getAssociatedParts());
     }
     
 }

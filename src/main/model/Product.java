@@ -22,7 +22,7 @@ public class Product {
     private SimpleIntegerProperty Stock;
     private SimpleIntegerProperty Min;
     private SimpleIntegerProperty Max;
-    public ObservableList<Part> associatedParts;
+    public ObservableList<Part> associatedParts = FXCollections.observableArrayList();
 
     public Product(int id, SimpleStringProperty name, SimpleIntegerProperty stock, SimpleDoubleProperty price,  SimpleIntegerProperty min, SimpleIntegerProperty max, ObservableList<Part> associatedParts) {
         this.Id = id;

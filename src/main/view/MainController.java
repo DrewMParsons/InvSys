@@ -229,6 +229,7 @@ public class MainController implements Initializable {
         controller.setData(invSys.systemInventory);
         controller.setIndex(index);;
         controller.initData(selectedProduct);
+        
         stage.showAndWait();
 
     }
