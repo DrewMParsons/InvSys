@@ -1,22 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package main.view;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import main.exceptions.DialogBox;
 import main.model.InHouse;
 import main.model.Inventory;
 import main.model.Outsourced;
@@ -61,6 +60,7 @@ public class ModifyPartController implements Initializable {
     private InHouse InHousePart;
     private Outsourced OutsourcedPart;
     private int index;
+    private DialogBox confirm;
     
 
     /**
@@ -68,7 +68,7 @@ public class ModifyPartController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+      
     }
 
     public void setIndex(int index) {
@@ -142,7 +142,17 @@ public class ModifyPartController implements Initializable {
 
     @FXML
     private void cancelButtonHandler(ActionEvent event) {
-        CancelButton.getScene().getWindow().hide();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Confirming!");
+        alert.setContentText("Are you sure you wish to cancel?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == ButtonType.OK) {
+            CancelButton.getScene().getWindow().hide();
+        }
     }
    /**
     * Sets the fields for the part to be modified it is type InHouse

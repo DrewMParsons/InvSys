@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package main.model;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
@@ -16,10 +10,14 @@ import javafx.beans.property.SimpleStringProperty;
 public class Outsourced extends Part{
     
         
-    private SimpleStringProperty CompanyId = new SimpleStringProperty("");
+    private final SimpleStringProperty CompanyId = new SimpleStringProperty("");
 
     
    //constructor
+    
+    public Outsourced(){
+        this("",0.0,0,0,0,"");
+    }
     public Outsourced( String name, double price, int stock, int min, int max, String companyId)
     {
         

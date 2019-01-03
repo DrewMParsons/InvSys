@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package main.model;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -14,10 +10,10 @@ import javafx.collections.ObservableList;
  */
 public class Inventory {
 
-    private ObservableList<Part> allParts;
-    private ObservableList<Product> allProducts;
-    private static AtomicInteger IdGenerator = new AtomicInteger(1000);
-    private static AtomicInteger ProductIdGenerator = new AtomicInteger(0);
+    private final ObservableList<Part> allParts;
+    private final ObservableList<Product> allProducts;
+    private final static AtomicInteger IdGenerator = new AtomicInteger(1000);
+    private final static AtomicInteger ProductIdGenerator = new AtomicInteger(0);
     
     public Inventory(ObservableList<Part> allParts, ObservableList<Product> allProducts) {
         this.allParts = allParts;

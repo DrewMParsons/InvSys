@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package main.model;
 
 import javafx.beans.property.SimpleDoubleProperty;
@@ -14,12 +10,12 @@ import javafx.beans.property.SimpleStringProperty;
  * @author Drew
  */
 public abstract class Part {
-    private SimpleIntegerProperty Id = new SimpleIntegerProperty(0);
-    private SimpleStringProperty Name = new SimpleStringProperty("");
-    private SimpleDoubleProperty Price = new SimpleDoubleProperty(0.0);
-    private SimpleIntegerProperty Stock = new SimpleIntegerProperty(0);
-    private SimpleIntegerProperty Min = new SimpleIntegerProperty(0);
-    private SimpleIntegerProperty Max = new SimpleIntegerProperty(0);
+    private final SimpleIntegerProperty Id = new SimpleIntegerProperty(0);
+    private final SimpleStringProperty Name = new SimpleStringProperty("");
+    private final SimpleDoubleProperty Price = new SimpleDoubleProperty(0.0);
+    private final SimpleIntegerProperty Stock = new SimpleIntegerProperty(0);
+    private final SimpleIntegerProperty Min = new SimpleIntegerProperty(0);
+    private final SimpleIntegerProperty Max = new SimpleIntegerProperty(0);
     
     
     public int getId() {
@@ -75,28 +71,28 @@ public abstract class Part {
     }
 
     /**
-     * @param Price the Price to set
+     * @param price the Price to set
      */
     public void setPrice(double price) {
         Price.set(price);
     }
 
     /**
-     * @param Stock the Stock to set
+     * @param stock the Stock to set
      */
     public void setStock(int stock) {
         Stock.set(stock);
     }
 
     /**
-     * @param Min the Min to set
+     * @param min the Min to set
      */
     public void setMin(int min) {
         Min.set(min);
     }
 
     /**
-     * @param Max the Max to set
+     * @param max the Max to set
      */
     public void setMax(int max) {
         Max.set(max);

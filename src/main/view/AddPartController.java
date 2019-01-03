@@ -1,31 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package main.view;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.attribute.AclEntryType;
+import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleGroup;
-import javafx.stage.Stage;
+import javafx.scene.layout.GridPane;
+import javafx.util.converter.IntegerStringConverter;
+import main.exceptions.DialogBox;
+import main.exceptions.Validations;
 import main.model.*;
 
 /**
@@ -33,7 +28,7 @@ import main.model.*;
  *
  * @author Drew
  */
-public class AddPartController implements Initializable {
+public class AddPartController extends Validations implements Initializable {
 
     @FXML
     private RadioButton InHouseRadioButton;
@@ -43,6 +38,9 @@ public class AddPartController implements Initializable {
 
     @FXML
     private RadioButton OutscourcedRadioButton;
+
+    @FXML
+    private GridPane GridPane;
 
     @FXML
     private TextField PartID;
@@ -74,8 +72,9 @@ public class AddPartController implements Initializable {
     @FXML
     private Button CancelButton;
     private Inventory data;
-    
-    
+    private Part tempPart;
+    private DialogBox confirm;
+    private boolean test;
 
     public Inventory getData() {
         return data;
@@ -85,14 +84,22 @@ public class AddPartController implements Initializable {
         this.data = data;
     }
 
-    
-
     /**
-     * Initializes the controller class.
+     * initializes the controller class
+     *
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         InHouseRadioButton.setSelected(true);
+        tempPart = new InHouse();
+        PartID.setText("0");
+//        PartName.setText("");
+//        PartInv.setText("0");
+//        PartPrice.setText("0.0");
+//        PartMax.setText("0");
+//        PartMin.setText("0");
 
     }
 
@@ -121,50 +128,113 @@ public class AddPartController implements Initializable {
     /**
      * When save button is pressed, the fields are saved into the proper object,
      * depending on which radio button is selected
+     * several checks from main.exceptions.Validations are made to ensure valid data entry
      *
      * @param event
      */
     @FXML
     private void saveButtonHandler(ActionEvent event) {
 
-        String id = PartID.getText();
-        String name = PartName.getText();
-        String price = PartPrice.getText();
-        String inv = PartInv.getText();
-        String max = PartMax.getText();
-        String min = PartMin.getText();
-        String other = PartOtherID.getText();
-        if(InHouseRadioButton.isSelected()){
-            data.addPart(new InHouse(
-                name,
-                Double.parseDouble(price),
-                Integer.parseInt(inv),
-                Integer.parseInt(max),
-                Integer.parseInt(min),
-                Integer.parseInt(other)
-        ));
-            
+        if (isInputValid(PartName, "Name must be Entered")) {
+            tempPart.setName(PartName.getText());
+        } else {
+            return;
         }
-        else{
-            data.addPart(new Outsourced(
-                name,
-                Double.parseDouble(price),
-                Integer.parseInt(inv),
-                Integer.parseInt(max),
-                Integer.parseInt(min),
-                other));
-            
+
+        if (isInputValid(PartInv, "Inventory must be Entered")) {
+            try {
+                tempPart.setStock(Integer.parseInt(PartInv.getText()));
+            } catch (NumberFormatException e) {
+                numberAlert("Inventory must be number");
+                return;
+            }
+        } else {
+            return;
         }
+
+        if (isInputValid(PartMin, "Minimum must be Entered")) {
+            try {
+                tempPart.setMin(Integer.parseInt(PartMin.getText()));
+            } catch (NumberFormatException e) {
+                numberAlert("Minimum must be number");
+                return;
+            }
+        } else {
+            return;
+        }
+
+        if (isInputValid(PartMax, "Maximum must be Entered")) {
+            try {
+                tempPart.setMax(Integer.parseInt(PartMax.getText()));
+            } catch (NumberFormatException e) {
+                numberAlert("Maximum must be number");
+                return;
+            }
+
+        } else {
+            return;
+        }
+        if (isInputValid(PartPrice, "Price must be Entered")) {
+            try {
+                tempPart.setPrice(Double.parseDouble(PartPrice.getText()));
+            } catch (NumberFormatException e) {
+                numberAlert("Price must be decimal number");
+                return;
+            }
+        } else {
+            return;
+        }
+
+        if (tempPart.getMax() <= tempPart.getMin()) {
+            numberAlert("Maximum must be larger than Minimum");
+            return;
+
+        }
+
+        if (tempPart.getStock() < tempPart.getMin() || tempPart.getStock() > tempPart.getMax()) {
+            numberAlert("Inventory must be a number value between Maximum and Minimum");
+            return;
+        }
+        if (InHouseRadioButton.isSelected()) {
+            if (isInputValid(PartOtherID, "Machine ID field must be Entered")) {
+                try {
+                    ((InHouse) tempPart).setMachineId(Integer.parseInt(PartOtherID.getText()));
+                } catch (NumberFormatException e) {
+                    numberAlert("Machine ID must be a number");
+                    return;
+                }
+            }
+        } else {
+            if (isInputValid(PartOtherID, "Company Name field must be Entered")) {
+
+                ((Outsourced) tempPart).setCompanyId(PartOtherID.getText());
+                return;
+
+            }
+        }
+
+        data.addPart(tempPart);
         SaveButton.getScene().getWindow().hide();
+
     }
+
 
     @FXML
-    private void cancelButtonHandler(ActionEvent event) throws IOException {
-        CancelButton.getScene().getWindow().hide();
+    private void cancelButtonHandler(ActionEvent event
+    ) {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Confirming!");
+        alert.setContentText("Are you sure you wish to cancel?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == ButtonType.OK) {
+            CancelButton.getScene().getWindow().hide();
+        }
 
     }
-
- 
-    
 
 }

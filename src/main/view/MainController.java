@@ -2,21 +2,23 @@ package main.view;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import main.exceptions.DialogBox;
 import main.model.InHouse;
 import main.model.Part;
 import main.model.Product;
@@ -88,6 +90,8 @@ public class MainController implements Initializable {
 
     private InventorySystem invSys;
 
+    private DialogBox confirm;
+
     public MainController() {
 
     }
@@ -108,13 +112,7 @@ public class MainController implements Initializable {
         this.DeleteProductButton.setDisable(false);
     }
 
-    @FXML
-    void ExitButtonHandler(ActionEvent event) {
-        Stage stage = (Stage) ExitButton.getScene().getWindow();
-        stage.close();
-
-    }
-
+// 
     @FXML
     void SearchPartsButtonHandler(ActionEvent event) {
         Part search = invSys.systemInventory.lookupPart(SearchPartsField.getText());
@@ -139,7 +137,6 @@ public class MainController implements Initializable {
         if (search != null) {
             ProductsTable.scrollTo(search);
             ProductsTable.getSelectionModel().select(search);
-            
 
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -175,21 +172,67 @@ public class MainController implements Initializable {
         stage.setScene(new Scene((Parent) loader.load()));
         AddProductController controller = loader.getController();
         controller.setData(invSys.systemInventory);
-        
+
         stage.showAndWait();
     }
 
     @FXML
     void deletePartButtonHandler(ActionEvent event) {
         int index = PartsTable.getSelectionModel().getSelectedIndex();
-        PartsTable.getItems().remove(index);
+        String name = PartsTable.getSelectionModel().getSelectedItem().getName();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Deleting!");
+        alert.setContentText("Are you sure you wish to delete " + name + "?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == ButtonType.OK) {
+
+            PartsTable.getItems().remove(index);
+
+        }
 
     }
 
     @FXML
     void deleteProductButtonHandler(ActionEvent event) {
         int index = ProductsTable.getSelectionModel().getSelectedIndex();
-        ProductsTable.getItems().remove(index);
+        String name = ProductsTable.getSelectionModel().getSelectedItem().getName();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Deleting!");
+        alert.setContentText("Are you sure you wish to delete " + name + "?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == ButtonType.OK) {
+
+            ProductsTable.getItems().remove(index);
+
+        }
+
+    }
+
+    @FXML
+    void ExitButtonHandler(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Exiting Program");
+        alert.setContentText("Are you sure you wish to Exit?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == ButtonType.OK) {
+            Stage stage = (Stage) ExitButton.getScene().getWindow();
+            stage.close();
+
+        } else {
+
+        }
 
     }
 
@@ -227,9 +270,9 @@ public class MainController implements Initializable {
 
         ModifyProductController controller = loader.getController();
         controller.setData(invSys.systemInventory);
-        controller.setIndex(index);;
+        controller.setIndex(index);
         controller.initData(selectedProduct);
-        
+
         stage.showAndWait();
 
     }
@@ -249,7 +292,6 @@ public class MainController implements Initializable {
         ProductPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
         ProductInv.setCellValueFactory(new PropertyValueFactory<>("Stock"));
 
-        
         //Disable the modify/delete buttons until a row is selected
         this.ModifyPartButton.setDisable(true);
         this.ModifyProductButton.setDisable(true);
@@ -266,9 +308,9 @@ public class MainController implements Initializable {
         PartsTable.setItems(invSys.systemInventory.getAllParts());
         ProductsTable.setItems(invSys.systemInventory.getAllProducts());
     }
-    
-    public void highlightOnSearch(){
-        
+
+    public void highlightOnSearch() {
+
     }
 
 }
