@@ -95,8 +95,9 @@ public class AddPartController extends Validations implements Initializable {
         InHouseRadioButton.setSelected(true);
         tempPart = new InHouse();
         PartID.setText("0");
+        PartInv.setText("0");
 //        PartName.setText("");
-//        PartInv.setText("0");
+//        
 //        PartPrice.setText("0.0");
 //        PartMax.setText("0");
 //        PartMin.setText("0");
@@ -127,97 +128,42 @@ public class AddPartController extends Validations implements Initializable {
 
     /**
      * When save button is pressed, the fields are saved into the proper object,
-     * depending on which radio button is selected
-     * several checks from main.exceptions.Validations are made to ensure valid data entry
+     * depending on which radio button is selected several checks from
+     * main.exceptions.Validations are made to ensure valid data entry
      *
      * @param event
      */
     @FXML
     private void saveButtonHandler(ActionEvent event) {
 
-        if (isInputValid(PartName, "Name must be Entered")) {
-            tempPart.setName(PartName.getText());
-        } else {
-            return;
-        }
+        if (partValidation(tempPart, PartName, PartInv, PartPrice, PartMin, PartMax)) {
 
-        if (isInputValid(PartInv, "Inventory must be Entered")) {
-            try {
-                tempPart.setStock(Integer.parseInt(PartInv.getText()));
-            } catch (NumberFormatException e) {
-                numberAlert("Inventory must be number");
-                return;
-            }
-        } else {
-            return;
-        }
-
-        if (isInputValid(PartMin, "Minimum must be Entered")) {
-            try {
-                tempPart.setMin(Integer.parseInt(PartMin.getText()));
-            } catch (NumberFormatException e) {
-                numberAlert("Minimum must be number");
-                return;
-            }
-        } else {
-            return;
-        }
-
-        if (isInputValid(PartMax, "Maximum must be Entered")) {
-            try {
-                tempPart.setMax(Integer.parseInt(PartMax.getText()));
-            } catch (NumberFormatException e) {
-                numberAlert("Maximum must be number");
-                return;
-            }
-
-        } else {
-            return;
-        }
-        if (isInputValid(PartPrice, "Price must be Entered")) {
-            try {
-                tempPart.setPrice(Double.parseDouble(PartPrice.getText()));
-            } catch (NumberFormatException e) {
-                numberAlert("Price must be decimal number");
-                return;
-            }
-        } else {
-            return;
-        }
-
-        if (tempPart.getMax() <= tempPart.getMin()) {
-            numberAlert("Maximum must be larger than Minimum");
-            return;
-
-        }
-
-        if (tempPart.getStock() < tempPart.getMin() || tempPart.getStock() > tempPart.getMax()) {
-            numberAlert("Inventory must be a number value between Maximum and Minimum");
-            return;
-        }
-        if (InHouseRadioButton.isSelected()) {
-            if (isInputValid(PartOtherID, "Machine ID field must be Entered")) {
-                try {
-                    ((InHouse) tempPart).setMachineId(Integer.parseInt(PartOtherID.getText()));
-                } catch (NumberFormatException e) {
-                    numberAlert("Machine ID must be a number");
+            if (InHouseRadioButton.isSelected()) {
+                if (isInputValid(PartOtherID, "Machine ID field must be Entered")) {
+                    try {
+                        ((InHouse) tempPart).setMachineId(Integer.parseInt(PartOtherID.getText()));
+                    } catch (NumberFormatException e) {
+                        numberAlert("Machine ID must be a number");
+                        return;
+                    }
+                }
+                else{
                     return;
                 }
+            } else {
+                if (isInputValid(PartOtherID, "Company Name field must be Entered")) {
+                    ((Outsourced) tempPart).setCompanyId(PartOtherID.getText());
+                    return;
+                } else{
+                    return;
+                }
+               
             }
-        } else {
-            if (isInputValid(PartOtherID, "Company Name field must be Entered")) {
-
-                ((Outsourced) tempPart).setCompanyId(PartOtherID.getText());
-                return;
-
-            }
+            data.addPart(tempPart);
+            SaveButton.getScene().getWindow().hide();
         }
 
-        data.addPart(tempPart);
-        SaveButton.getScene().getWindow().hide();
-
     }
-
 
     @FXML
     private void cancelButtonHandler(ActionEvent event
