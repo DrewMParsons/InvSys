@@ -247,13 +247,25 @@ public class MainController implements Initializable {
         stage.setScene(new Scene((Parent) loader.load()));
 
         ModifyPartController controller = loader.getController();
+        if (selectedPart instanceof InHouse) {
+           controller.setRadioButton(true,selectedPart);
+         }
+        else{
+            controller.setRadioButton(false,selectedPart);
+        }
         controller.setData(invSys.systemInventory);
         controller.setIndex(index);
-        if (selectedPart instanceof InHouse) {
-            controller.initDataInHouse(selectedPart);
-        } else {
-            controller.initDataOutsourced(selectedPart);
-        }
+        
+//        } else {
+//            controller.initDataOutsourced(selectedPart);
+//        }
+        
+        controller.initDataInHouse(((Part) selectedPart));
+//        if (selectedPart instanceof InHouse) {
+//            controller.initDataInHouse(selectedPart);
+//        } else {
+//            controller.initDataOutsourced(selectedPart);
+//        }
         stage.showAndWait();
 
     }

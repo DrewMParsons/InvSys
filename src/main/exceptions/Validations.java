@@ -53,6 +53,17 @@ public class Validations {
             Optional<ButtonType> result = alert.showAndWait();
    }
    
+   /**
+    * Validates text fields for Parts  
+    * @param part
+    * @param name
+    * @param inv
+    * @param price
+    * @param min
+    * @param max
+    * @return 
+    */
+   
    public static boolean partValidation(Part part, TextField name, TextField inv, TextField price, TextField min, TextField max ) {
         if (isInputValid(name, "Name must be Entered")) {
             part.setName(name.getText());
