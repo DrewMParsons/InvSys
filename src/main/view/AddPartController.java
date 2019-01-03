@@ -1,25 +1,19 @@
 package main.view;
 
-import java.awt.Color;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
-import javafx.util.converter.IntegerStringConverter;
-import main.exceptions.DialogBox;
 import main.exceptions.Validations;
 import main.model.*;
 
@@ -73,7 +67,7 @@ public class AddPartController extends Validations implements Initializable {
     private Button CancelButton;
     private Inventory data;
     private Part tempPart;
-    private DialogBox confirm;
+    
     private boolean test;
 
     public Inventory getData() {
@@ -96,11 +90,7 @@ public class AddPartController extends Validations implements Initializable {
         tempPart = new InHouse();
         PartID.setText("0");
         PartInv.setText("0");
-//        PartName.setText("");
-//        
-//        PartPrice.setText("0.0");
-//        PartMax.setText("0");
-//        PartMin.setText("0");
+
 
     }
 

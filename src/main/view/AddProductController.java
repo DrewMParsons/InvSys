@@ -15,7 +15,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import main.exceptions.DialogBox;
 import main.model.Inventory;
 import main.model.Part;
 import main.model.Product;
@@ -75,10 +74,8 @@ public class AddProductController extends Validations implements Initializable {
     private Product tempProduct = new Product();
     private Inventory data;
     private ObservableList<Part> parts = FXCollections.observableArrayList();
-    ;
-    
-    private DialogBox confirm;
 
+    //getters and setters
     public ObservableList<Part> getParts() {
         return parts;
     }
@@ -94,7 +91,6 @@ public class AddProductController extends Validations implements Initializable {
     public void setData(Inventory data) {
         this.data = data;
         AddPartTable.setItems(data.getAllParts());
-
     }
 
     /**
@@ -127,58 +123,39 @@ public class AddProductController extends Validations implements Initializable {
 
     @FXML
     private void deleteButtonHandler(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
-        alert.setTitle("Warning Dialog");
-        alert.setHeaderText("Deleting!");
-        alert.setContentText("Are you sure you wish to delete ?");
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if (result.get() == ButtonType.OK) {
-
+        if (deleteAlert(DeletePartTable.getSelectionModel().getSelectedItem().getName())) {
             DeletePartTable.getItems().remove(
                     DeletePartTable.getSelectionModel().getSelectedItem());
-
         }
     }
 
     @FXML
     private void saveButtonHandler(ActionEvent event) {
-        
-        if(productValidation(tempProduct, GetProductName, GetProductInv, GetProductPrice, GetProductMin, GetProductMax)){
+
+        if (productValidation(tempProduct, GetProductName, GetProductInv, GetProductPrice, GetProductMin, GetProductMax)) {
             parts.addAll(DeletePartTable.getItems());
-            if(parts.isEmpty()){
+            if (parts.isEmpty()) {
                 numberAlert("Product must contain at least one part");
-                return;  
+                return;
             }
             double sum = 0;
-            for(Part p: parts){
-               
-                double price = p.getPrice();
-                sum +=price;
-                
+            double price = 0.0;
+            for (Part p : parts) {
+
+                price = p.getPrice();
+                sum = sum + price;
+
             }
-            if(tempProduct.getPrice()< sum){
-                numberAlert("Product price of: " + tempProduct.getPrice()+" is less than cost of it's parts: " + sum);
+            if (tempProduct.getPrice() < sum) {
+                numberAlert("Product price of: " + tempProduct.getPrice() + " is less than cost of it's parts: " + sum);
                 return;
             }
             tempProduct.setAssociatedParts(parts);
             data.addProduct(tempProduct);
-            
-            SaveButton.getScene().getWindow().hide();
-            
-        }
-        
-        
-//        String name = GetProductName.getText();
-//        String inv = GetProductInv.getText();
-//        String price = GetProductPrice.getText();
-//        String max = GetProductMax.getText();
-//        String min = GetProductMin.getText();
-//
-//        parts.addAll(DeletePartTable.getItems());
 
-        
+            SaveButton.getScene().getWindow().hide();
+
+        }
 
     }
 

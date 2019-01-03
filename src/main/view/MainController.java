@@ -18,12 +18,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import main.exceptions.DialogBox;
+
+import main.exceptions.Validations;
 import main.model.InHouse;
 import main.model.Part;
 import main.model.Product;
 
-public class MainController implements Initializable {
+public class MainController extends Validations implements Initializable {
 
     @FXML
     private Button SearchPartsButton;
@@ -90,7 +91,7 @@ public class MainController implements Initializable {
 
     private InventorySystem invSys;
 
-    private DialogBox confirm;
+    
 
     public MainController() {
 
@@ -180,18 +181,8 @@ public class MainController implements Initializable {
     void deletePartButtonHandler(ActionEvent event) {
         int index = PartsTable.getSelectionModel().getSelectedIndex();
         String name = PartsTable.getSelectionModel().getSelectedItem().getName();
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
-        alert.setTitle("Warning Dialog");
-        alert.setHeaderText("Deleting!");
-        alert.setContentText("Are you sure you wish to delete " + name + "?");
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if (result.get() == ButtonType.OK) {
-
+        if (deleteAlert(name)) {
             PartsTable.getItems().remove(index);
-
         }
 
     }
@@ -200,19 +191,15 @@ public class MainController implements Initializable {
     void deleteProductButtonHandler(ActionEvent event) {
         int index = ProductsTable.getSelectionModel().getSelectedIndex();
         String name = ProductsTable.getSelectionModel().getSelectedItem().getName();
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
-        alert.setTitle("Warning Dialog");
-        alert.setHeaderText("Deleting!");
-        alert.setContentText("Are you sure you wish to delete " + name + "?");
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if (result.get() == ButtonType.OK) {
-
-            ProductsTable.getItems().remove(index);
-
+        if (ProductsTable.getSelectionModel().getSelectedItem().getAssociatedParts().isEmpty()) {
+        } else {
+            numberAlert("Cannot Delete Product that containd a Part");
+            return;
         }
+        if (deleteAlert(name)) {
+            ProductsTable.getItems().remove(index);
+        }
+//        
 
     }
 
@@ -248,24 +235,16 @@ public class MainController implements Initializable {
 
         ModifyPartController controller = loader.getController();
         if (selectedPart instanceof InHouse) {
-           controller.setRadioButton(true,selectedPart);
-         }
-        else{
-            controller.setRadioButton(false,selectedPart);
+            controller.setRadioButton(true, selectedPart);
+        } else {
+            controller.setRadioButton(false, selectedPart);
         }
         controller.setData(invSys.systemInventory);
         controller.setIndex(index);
-        
-//        } else {
-//            controller.initDataOutsourced(selectedPart);
-//        }
-        
+
+
         controller.initDataInHouse(((Part) selectedPart));
-//        if (selectedPart instanceof InHouse) {
-//            controller.initDataInHouse(selectedPart);
-//        } else {
-//            controller.initDataOutsourced(selectedPart);
-//        }
+
         stage.showAndWait();
 
     }

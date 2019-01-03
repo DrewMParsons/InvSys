@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import main.exceptions.DialogBox;
+
 import static main.exceptions.Validations.isInputValid;
 import static main.exceptions.Validations.numberAlert;
 import static main.exceptions.Validations.partValidation;
@@ -62,7 +62,7 @@ public class ModifyPartController implements Initializable {
     private InHouse InHousePart = new InHouse();
     private Outsourced OutsourcedPart = new Outsourced();
     private int index;
-    private DialogBox confirm;
+    
 
     /**
      * Initializes the controller class.

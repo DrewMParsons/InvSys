@@ -15,7 +15,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import main.exceptions.DialogBox;
+
+import static main.exceptions.Validations.numberAlert;
+import static main.exceptions.Validations.productValidation;
 import main.model.Inventory;
 import main.model.Part;
 import main.model.Product;
@@ -73,7 +75,7 @@ public class ModifyProductController implements Initializable {
     private TextField SearchField;
 
     private int index;
-    private Product product;
+    private Product tempProduct;
     private Inventory data;
     private ObservableList<Part> parts = FXCollections.observableArrayList();
 
@@ -139,7 +141,7 @@ public class ModifyProductController implements Initializable {
     @FXML
     private void deleteButtonHandler(ActionEvent event) {
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION  );
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
         alert.setTitle("Warning Dialog");
         alert.setHeaderText("Deleting!");
@@ -156,24 +158,34 @@ public class ModifyProductController implements Initializable {
 
     @FXML
     private void saveButtonHandler(ActionEvent event) {
-        String id = productID.getText();
-        String name = GetProductName.getText();
-        String inv = GetProductInv.getText();
-        String price = GetProductPrice.getText();
-        String max = GetProductMax.getText();
-        String min = GetProductMin.getText();
 
-        parts.addAll(DeletePartTable.getItems());
-        data.getAllProducts().remove(index);
-        data.modifyProduct(new Product(Integer.parseInt(id),
-                name,
-                Integer.parseInt(inv),
-                Double.parseDouble(price),
-                Integer.parseInt(max),
-                Integer.parseInt(min),
-                parts));
 
-        SaveButton.getScene().getWindow().hide();
+        if (productValidation(tempProduct, GetProductName, GetProductInv, GetProductPrice, GetProductMin, GetProductMax)) {
+            
+            parts.addAll(DeletePartTable.getItems());
+            if (parts.isEmpty()) {
+                numberAlert("Product must contain at least one part");
+                return;
+            }
+            double sum = 0;
+            for (Part p : parts) {
+
+                double price = p.getPrice();
+                sum += price;
+
+            }
+            if (tempProduct.getPrice() < sum) {
+                numberAlert("Product price of: " + tempProduct.getPrice() + " is less than cost of it's parts: " + sum);
+                return;
+            }
+            tempProduct.setAssociatedParts(parts);
+       
+            data.getAllProducts().remove(index);
+            data.modifyProduct(tempProduct);
+
+            SaveButton.getScene().getWindow().hide();
+
+        }
 
     }
 
@@ -187,9 +199,9 @@ public class ModifyProductController implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
 
-        if (result.get() == ButtonType.OK) 
+        if (result.get() == ButtonType.OK) {
             CancelButton.getScene().getWindow().hide();
-        
+        }
 
     }
 
@@ -211,7 +223,7 @@ public class ModifyProductController implements Initializable {
     }
 
     void initData(Product product) {
-        this.product = product;
+        this.tempProduct = product;
         productID.setText(Integer.toString(product.getId()));
         GetProductName.setText(product.getName());
         GetProductInv.setText(Integer.toString(product.getStock()));

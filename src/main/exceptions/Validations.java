@@ -9,8 +9,6 @@ import java.util.Optional;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
-import main.model.InHouse;
-import main.model.Outsourced;
 import main.model.Part;
 import main.model.Product;
 
@@ -52,6 +50,17 @@ public class Validations {
        Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(alertText);
             Optional<ButtonType> result = alert.showAndWait();
+   }
+   
+   public static boolean deleteAlert(String name){
+       Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        alert.setTitle("Warning Dialog");
+        alert.setHeaderText("Deleting!");
+        alert.setContentText("Are you sure you wish to delete " + name + "?");
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.get() == ButtonType.OK;
+       
    }
    
    /**
@@ -172,11 +181,5 @@ public class Validations {
     }
        
    
-//   public static isInputNumber(TextField textField, String alertText){
-//       boolean b = false;
-//       if((Integer.parseInt(textField.getText())))
-//       
-//       
-//   }
-   //CREATE MORE VALIDATION FIELDS
+
 }
