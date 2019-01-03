@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import main.model.InHouse;
 import main.model.Outsourced;
 import main.model.Part;
+import main.model.Product;
 
 /**
  *
@@ -35,7 +36,7 @@ public class Validations {
             b=true;
         }
         else{
-            //textField.setText("0");
+            
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(alertText);
             Optional<ButtonType> result = alert.showAndWait();
@@ -108,6 +109,59 @@ public class Validations {
             return false;
         }
         if (part.getStock() < part.getMin() || part.getStock() > part.getMax()) {
+            numberAlert("Inventory must be a number value between Maximum and Minimum");
+            return false;
+        }
+        
+        
+        
+        return true;
+    }
+   
+   public static boolean productValidation(Product product, TextField name, TextField inv, TextField price, TextField min, TextField max ) {
+        if (isInputValid(name, "Name must be Entered")) {
+            product.setName(name.getText());
+        
+        } 
+        
+        if (isInputValid(inv, "Inventory must be Entered")) {
+            try {
+                product.setStock(Integer.parseInt(inv.getText()));
+            } catch (NumberFormatException e) {
+                numberAlert("Inventory must be number");
+                return false;
+            }
+        } 
+       
+        if (isInputValid(min, "Minimum must be Entered")) {
+            try {
+                product.setMin(Integer.parseInt(min.getText()));
+            } catch (NumberFormatException e) {
+                numberAlert("Minimum must be number");
+                return false;
+            }
+        }
+        if (isInputValid(max, "Maximum must be Entered")) {
+            try {
+                product.setMax(Integer.parseInt(max.getText()));
+            } catch (NumberFormatException e) {
+                numberAlert("Maximum must be number");
+                return false;
+            }
+        } 
+        if (isInputValid(price, "Price must be Entered")) {
+            try {
+                product.setPrice(Double.parseDouble(price.getText()));
+            } catch (NumberFormatException e) {
+                numberAlert("Price must be decimal number");
+                return false;
+            }
+        } 
+        if (product.getMax() <= product.getMin()) {
+            numberAlert("Maximum must be larger than Minimum");
+            return false;
+        }
+        if (product.getStock() < product.getMin() || product.getStock() > product.getMax()) {
             numberAlert("Inventory must be a number value between Maximum and Minimum");
             return false;
         }

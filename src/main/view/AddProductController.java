@@ -19,13 +19,14 @@ import main.exceptions.DialogBox;
 import main.model.Inventory;
 import main.model.Part;
 import main.model.Product;
+import main.exceptions.Validations;
 
 /**
  * FXML Controller class
  *
  * @author Drew
  */
-public class AddProductController implements Initializable {
+public class AddProductController extends Validations implements Initializable {
 
     @FXML
     private TextField productID;
@@ -71,7 +72,7 @@ public class AddProductController implements Initializable {
     private Button SearchButton;
     @FXML
     private TextField SearchField;
-
+    private Product tempProduct = new Product();
     private Inventory data;
     private ObservableList<Part> parts = FXCollections.observableArrayList();
     ;
@@ -113,6 +114,8 @@ public class AddProductController implements Initializable {
         DeletePartPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
         DeletePartInv.setCellValueFactory(new PropertyValueFactory<>("Stock"));
 
+        //set default inv to 0
+        GetProductInv.setText("0");
     }
 
     @FXML
@@ -141,22 +144,41 @@ public class AddProductController implements Initializable {
 
     @FXML
     private void saveButtonHandler(ActionEvent event) {
-        String name = GetProductName.getText();
-        String inv = GetProductInv.getText();
-        String price = GetProductPrice.getText();
-        String max = GetProductMax.getText();
-        String min = GetProductMin.getText();
+        
+        if(productValidation(tempProduct, GetProductName, GetProductInv, GetProductPrice, GetProductMin, GetProductMax)){
+            parts.addAll(DeletePartTable.getItems());
+            if(parts.isEmpty()){
+                numberAlert("Product must contain at least one part");
+                return;  
+            }
+            double sum = 0;
+            for(Part p: parts){
+               
+                double price = p.getPrice();
+                sum +=price;
+                
+            }
+            if(tempProduct.getPrice()< sum){
+                numberAlert("Product price of: " + tempProduct.getPrice()+" is less than cost of it's parts: " + sum);
+                return;
+            }
+            tempProduct.setAssociatedParts(parts);
+            data.addProduct(tempProduct);
+            
+            SaveButton.getScene().getWindow().hide();
+            
+        }
+        
+        
+//        String name = GetProductName.getText();
+//        String inv = GetProductInv.getText();
+//        String price = GetProductPrice.getText();
+//        String max = GetProductMax.getText();
+//        String min = GetProductMin.getText();
+//
+//        parts.addAll(DeletePartTable.getItems());
 
-        parts.addAll(DeletePartTable.getItems());
-
-        data.addProduct(new Product(name,
-                Integer.parseInt(inv),
-                Double.parseDouble(price),
-                Integer.parseInt(max),
-                Integer.parseInt(min),
-                parts));
-
-        SaveButton.getScene().getWindow().hide();
+        
 
     }
 
