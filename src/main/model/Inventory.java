@@ -15,10 +15,15 @@ public class Inventory {
     private final static AtomicInteger IDGENERATOR = new AtomicInteger(1000);
     private final static AtomicInteger PRODUCTIDGENERATOR = new AtomicInteger(0);
     
+    //constructor
+    
     public Inventory(ObservableList<Part> allParts, ObservableList<Product> allProducts) {
         this.allParts = allParts;
         this.allProducts = allProducts;
     }
+    
+    
+    //getters and setters
 
     public void addPart(Part part) {
         allParts.add(part);

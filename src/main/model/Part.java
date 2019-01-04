@@ -16,6 +16,14 @@ public abstract class Part {
     private final SimpleIntegerProperty Stock = new SimpleIntegerProperty(0);
     private final SimpleIntegerProperty Min = new SimpleIntegerProperty(0);
     private final SimpleIntegerProperty Max = new SimpleIntegerProperty(0);
+
+    public Part() {
+    }
+    
+  
+    
+    
+    //getters and setters
     
     
     public int getId() {

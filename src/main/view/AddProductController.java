@@ -1,16 +1,13 @@
 package main.view;
 
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -18,14 +15,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import main.model.Inventory;
 import main.model.Part;
 import main.model.Product;
-import main.exceptions.Validations;
+import static main.exceptions.Validations.*;
 
 /**
  * FXML Controller class
  *
  * @author Drew
  */
-public class AddProductController extends Validations implements Initializable {
+public class AddProductController implements Initializable {
 
     @FXML
     private TextField productID;
@@ -123,9 +120,10 @@ public class AddProductController extends Validations implements Initializable {
 
     @FXML
     private void deleteButtonHandler(ActionEvent event) {
-        if (deleteAlert(DeletePartTable.getSelectionModel().getSelectedItem().getName())) {
-            DeletePartTable.getItems().remove(
-                    DeletePartTable.getSelectionModel().getSelectedItem());
+        Part deleteItem = DeletePartTable.getSelectionModel().getSelectedItem();
+        if (deleteAlert(deleteItem.getName())) {
+            DeletePartTable.getItems().remove(deleteItem);
+            tempProduct.getAssociatedParts().remove(deleteItem);
         }
     }
 
@@ -135,11 +133,11 @@ public class AddProductController extends Validations implements Initializable {
         if (productValidation(tempProduct, GetProductName, GetProductInv, GetProductPrice, GetProductMin, GetProductMax)) {
             parts.addAll(DeletePartTable.getItems());
             if (parts.isEmpty()) {
-                numberAlert("Product must contain at least one part");
+                errorAlert("Product must contain at least one part");
                 return;
             }
             double sum = 0;
-            double price = 0.0;
+            double price;
             for (Part p : parts) {
 
                 price = p.getPrice();
@@ -147,7 +145,7 @@ public class AddProductController extends Validations implements Initializable {
 
             }
             if (tempProduct.getPrice() < sum) {
-                numberAlert("Product price of: " + tempProduct.getPrice() + " is less than cost of it's parts: " + sum);
+                errorAlert("Product price of: " + tempProduct.getPrice() + " is less than cost of it's parts: " + sum);
                 return;
             }
             tempProduct.setAssociatedParts(parts);
@@ -161,15 +159,8 @@ public class AddProductController extends Validations implements Initializable {
 
     @FXML
     private void cancelButtonHandler(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Confirming!");
-        alert.setContentText("Are you sure you wish to cancel?");
-
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if (result.get() == ButtonType.OK) {
+        if (cancelAlert()) {
             CancelButton.getScene().getWindow().hide();
         }
     }
@@ -181,14 +172,9 @@ public class AddProductController extends Validations implements Initializable {
             AddPartTable.scrollTo(search);
             AddPartTable.getSelectionModel().select(search);
 
-        } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information Dialog");
-            alert.setHeaderText("Error");
-            alert.setContentText("Part: " + SearchField.getText() + " not found");
-
-            alert.showAndWait();
-        }
+        } else searchAlert(SearchField);
     }
+
+    
 
 }

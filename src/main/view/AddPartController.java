@@ -1,20 +1,16 @@
 package main.view;
 
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.GridPane;
-import main.exceptions.Validations;
+import static main.exceptions.Validations.*;
 import main.model.*;
 
 /**
@@ -22,7 +18,7 @@ import main.model.*;
  *
  * @author Drew
  */
-public class AddPartController extends Validations implements Initializable {
+public class AddPartController  implements Initializable {
 
     @FXML
     private RadioButton InHouseRadioButton;
@@ -32,9 +28,6 @@ public class AddPartController extends Validations implements Initializable {
 
     @FXML
     private RadioButton OutscourcedRadioButton;
-
-    @FXML
-    private GridPane GridPane;
 
     @FXML
     private TextField PartID;
@@ -66,9 +59,10 @@ public class AddPartController extends Validations implements Initializable {
     @FXML
     private Button CancelButton;
     private Inventory data;
-    private Part tempPart;
+    private InHouse inHousePart = new InHouse();
+    private Outsourced outsourced = new Outsourced();
+
     
-    private boolean test;
 
     public Inventory getData() {
         return data;
@@ -87,10 +81,9 @@ public class AddPartController extends Validations implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         InHouseRadioButton.setSelected(true);
-        tempPart = new InHouse();
+        
         PartID.setText("0");
         PartInv.setText("0");
-
 
     }
 
@@ -125,49 +118,48 @@ public class AddPartController extends Validations implements Initializable {
      */
     @FXML
     private void saveButtonHandler(ActionEvent event) {
-
-        if (partValidation(tempPart, PartName, PartInv, PartPrice, PartMin, PartMax)) {
-
-            if (InHouseRadioButton.isSelected()) {
+        
+        if (InHouseRadioButton.isSelected()){
+            if (partValidation(inHousePart, PartName, PartInv, PartPrice, PartMin, PartMax)){
                 if (isInputValid(PartOtherID, "Machine ID field must be Entered")) {
                     try {
-                        ((InHouse) tempPart).setMachineId(Integer.parseInt(PartOtherID.getText()));
+                        inHousePart.setMachineId(Integer.parseInt(PartOtherID.getText()));
+                        data.addPart(inHousePart);
+                        SaveButton.getScene().getWindow().hide();
                     } catch (NumberFormatException e) {
-                        numberAlert("Machine ID must be a number");
+                        errorAlert("Machine ID must be a number");
                         return;
                     }
-                }
-                else{
+                } else {
                     return;
                 }
-            } else {
-                if (isInputValid(PartOtherID, "Company Name field must be Entered")) {
-                    ((Outsourced) tempPart).setCompanyId(PartOtherID.getText());
-                    return;
-                } else{
+            } 
+            
+        } else{
+            if (partValidation(outsourced, PartName, PartInv, PartPrice, PartMin, PartMax)){
+                if (isInputValid(PartOtherID, "Machine ID field must be Entered")) {
+                    try {
+                        inHousePart.setMachineId(Integer.parseInt(PartOtherID.getText()));
+                        data.addPart(inHousePart);
+                        SaveButton.getScene().getWindow().hide();
+                    } catch (NumberFormatException e) {
+                        errorAlert("Machine ID must be a number");
+                        return;
+                    }
+                } else {
                     return;
                 }
-               
             }
-            data.addPart(tempPart);
-            SaveButton.getScene().getWindow().hide();
+            
         }
-
+        
     }
+        
+
 
     @FXML
-    private void cancelButtonHandler(ActionEvent event
-    ) {
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Confirming!");
-        alert.setContentText("Are you sure you wish to cancel?");
-
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if (result.get() == ButtonType.OK) {
+    private void cancelButtonHandler(ActionEvent event) {
+        if (cancelAlert()) {
             CancelButton.getScene().getWindow().hide();
         }
 

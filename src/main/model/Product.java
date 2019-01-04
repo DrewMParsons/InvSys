@@ -21,6 +21,7 @@ public class Product {
     public ObservableList<Part> associatedParts = FXCollections.observableArrayList();
 
   
+   //constructors
     
     public Product(int id,String name, int stock,double price,int min, int max, ObservableList<Part> associatedParts){
         setId(id);
@@ -64,6 +65,9 @@ public class Product {
         
     }
 
+    
+    //getters and setters
+    
  public int getId() {
         return Id.get();
     }

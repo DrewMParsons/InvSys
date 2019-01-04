@@ -19,12 +19,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-import main.exceptions.Validations;
+import static main.exceptions.Validations.*;
 import main.model.InHouse;
 import main.model.Part;
 import main.model.Product;
 
-public class MainController extends Validations implements Initializable {
+public class MainController  implements Initializable {
 
     @FXML
     private Button SearchPartsButton;
@@ -91,8 +91,6 @@ public class MainController extends Validations implements Initializable {
 
     private InventorySystem invSys;
 
-    
-
     public MainController() {
 
     }
@@ -122,12 +120,7 @@ public class MainController extends Validations implements Initializable {
             PartsTable.getSelectionModel().select(search);
 
         } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information Dialog");
-            alert.setHeaderText("Error");
-            alert.setContentText("Part: " + SearchPartsField.getText() + " not found");
-
-            alert.showAndWait();
+            searchAlert(SearchPartsField);
         }
 
     }
@@ -140,12 +133,7 @@ public class MainController extends Validations implements Initializable {
             ProductsTable.getSelectionModel().select(search);
 
         } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information Dialog");
-            alert.setHeaderText("Error");
-            alert.setContentText("Product: " + SearchProductsField.getText() + " not found");
-
-            alert.showAndWait();
+            searchAlert(SearchProductsField);
         }
     }
 
@@ -161,6 +149,8 @@ public class MainController extends Validations implements Initializable {
         controller.setData(invSys.systemInventory);
 
         stage.showAndWait();
+        PartsTable.refresh();
+        
 
     }
 
@@ -175,6 +165,7 @@ public class MainController extends Validations implements Initializable {
         controller.setData(invSys.systemInventory);
 
         stage.showAndWait();
+        ProductsTable.refresh();
     }
 
     @FXML
@@ -183,6 +174,7 @@ public class MainController extends Validations implements Initializable {
         String name = PartsTable.getSelectionModel().getSelectedItem().getName();
         if (deleteAlert(name)) {
             PartsTable.getItems().remove(index);
+            invSys.allParts.remove(PartsTable.getItems().get(index));
         }
 
     }
@@ -193,13 +185,14 @@ public class MainController extends Validations implements Initializable {
         String name = ProductsTable.getSelectionModel().getSelectedItem().getName();
         if (ProductsTable.getSelectionModel().getSelectedItem().getAssociatedParts().isEmpty()) {
         } else {
-            numberAlert("Cannot Delete Product that containd a Part");
+            errorAlert("Cannot Delete a Product that contains a Part");
             return;
         }
         if (deleteAlert(name)) {
             ProductsTable.getItems().remove(index);
+            invSys.allProducts.remove(ProductsTable.getItems().get(index));
         }
-//        
+       
 
     }
 
@@ -216,8 +209,6 @@ public class MainController extends Validations implements Initializable {
         if (result.get() == ButtonType.OK) {
             Stage stage = (Stage) ExitButton.getScene().getWindow();
             stage.close();
-
-        } else {
 
         }
 
@@ -242,10 +233,10 @@ public class MainController extends Validations implements Initializable {
         controller.setData(invSys.systemInventory);
         controller.setIndex(index);
 
-
-        controller.initDataInHouse(((Part) selectedPart));
+        controller.initData(((Part) selectedPart));
 
         stage.showAndWait();
+        PartsTable.refresh();
 
     }
 
@@ -265,12 +256,14 @@ public class MainController extends Validations implements Initializable {
         controller.initData(selectedProduct);
 
         stage.showAndWait();
+        ProductsTable.refresh();
+        
 
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        
         //set up columns for Parts Table
         PartID.setCellValueFactory(new PropertyValueFactory<>("Id"));
         PartName.setCellValueFactory(new PropertyValueFactory<>("Name"));
@@ -299,9 +292,4 @@ public class MainController extends Validations implements Initializable {
         PartsTable.setItems(invSys.systemInventory.getAllParts());
         ProductsTable.setItems(invSys.systemInventory.getAllProducts());
     }
-
-    public void highlightOnSearch() {
-
-    }
-
 }
