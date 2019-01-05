@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -96,6 +100,85 @@ public class MainController  implements Initializable {
     public MainController() {
 
     }
+     @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        //sets up listeners for Parts search field
+        SearchPartsField.textProperty().addListener((Observable o) ->
+        {
+            if(SearchPartsField.textProperty().get().isEmpty())
+            {
+                PartsTable.setItems(invSys.allParts);
+                return;
+            }
+            ObservableList<Part> tableItems = FXCollections.observableArrayList();
+            ObservableList<TableColumn<Part,?>> cols = PartsTable.getColumns();
+            
+            for (int i = 0; i < invSys.allParts.size(); i++)
+            {
+                for (int j = 0; j < cols.size(); j++)
+                {
+                    TableColumn col = cols.get(j);
+                    String cellvalue = col.getCellData(invSys.allParts.get(i)).toString();
+                    cellvalue = cellvalue.toLowerCase();
+                    if(cellvalue.contains(SearchPartsField.textProperty().get().toLowerCase()))
+                    {
+                        tableItems.add(invSys.allParts.get(i));
+                        break;
+                    }
+                    
+                }
+            }
+            PartsTable.setItems(tableItems);
+        });
+        //sets up listeners for Product search field
+        SearchProductsField.textProperty().addListener((Observable o) ->
+        {
+            if(SearchProductsField.textProperty().get().isEmpty())
+            {
+                ProductsTable.setItems(invSys.allProducts);
+                return;
+            }
+            ObservableList<Product> tableItems = FXCollections.observableArrayList();
+            ObservableList<TableColumn<Product,?>> cols = ProductsTable.getColumns();
+            
+            for (int i = 0; i < invSys.allProducts.size(); i++)
+            {
+                for (int j = 0; j < cols.size(); j++)
+                {
+                    TableColumn col = cols.get(j);
+                    String cellvalue = col.getCellData(invSys.allProducts.get(i)).toString();
+                    cellvalue = cellvalue.toLowerCase();
+                    if(cellvalue.contains(SearchProductsField.textProperty().get().toLowerCase()))
+                    {
+                        tableItems.add(invSys.allProducts.get(i));
+                        break;
+                    }
+                    
+                }
+            }
+            ProductsTable.setItems(tableItems);
+        });
+        
+        
+        
+        //set up columns for Parts Table
+        PartID.setCellValueFactory(new PropertyValueFactory<>("Id"));
+        PartName.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        PartPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
+        PartInv.setCellValueFactory(new PropertyValueFactory<>("Stock"));
+
+        //set up columns for Product Table
+        ProductID.setCellValueFactory(new PropertyValueFactory<>("Id"));
+        ProductName.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        ProductPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
+        ProductInv.setCellValueFactory(new PropertyValueFactory<>("Stock"));
+
+        //Disable the modify/delete buttons until a row is selected
+        this.ModifyPartButton.setDisable(true);
+        this.ModifyProductButton.setDisable(true);
+        this.DeletePartButton.setDisable(true);
+        this.DeleteProductButton.setDisable(true);
+    }
 
     /**
      * method enables the Modify/Delete Parts Button after a row is selected
@@ -116,14 +199,15 @@ public class MainController  implements Initializable {
 // 
     @FXML
     void SearchPartsButtonHandler(ActionEvent event) {
-        Part search = invSys.systemInventory.lookupPart(SearchPartsField.getText());
-        if (search != null) {
-            PartsTable.scrollTo(search);
-            PartsTable.getSelectionModel().select(search);
-
-        } else {
-            searchAlert(SearchPartsField);
-        }
+        
+//        Part search = invSys.systemInventory.lookupPart(SearchPartsField.getText());
+//        if (search != null) {
+//            PartsTable.scrollTo(search);
+//            PartsTable.getSelectionModel().select(search);
+//
+//        } else {
+//            searchAlert(SearchPartsField);
+//        }
 
     }
 
@@ -263,27 +347,7 @@ public class MainController  implements Initializable {
 
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        
-        //set up columns for Parts Table
-        PartID.setCellValueFactory(new PropertyValueFactory<>("Id"));
-        PartName.setCellValueFactory(new PropertyValueFactory<>("Name"));
-        PartPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
-        PartInv.setCellValueFactory(new PropertyValueFactory<>("Stock"));
-
-        //set up columns for Product Table
-        ProductID.setCellValueFactory(new PropertyValueFactory<>("Id"));
-        ProductName.setCellValueFactory(new PropertyValueFactory<>("Name"));
-        ProductPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
-        ProductInv.setCellValueFactory(new PropertyValueFactory<>("Stock"));
-
-        //Disable the modify/delete buttons until a row is selected
-        this.ModifyPartButton.setDisable(true);
-        this.ModifyProductButton.setDisable(true);
-        this.DeletePartButton.setDisable(true);
-        this.DeleteProductButton.setDisable(true);
-    }
+   
 
     public InventorySystem getInvSys() {
         return invSys;

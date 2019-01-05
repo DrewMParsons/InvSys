@@ -2,6 +2,8 @@ package main.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -117,7 +119,37 @@ public class ModifyProductController implements Initializable {
         DeletePartPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
         DeletePartInv.setCellValueFactory(new PropertyValueFactory<>("Stock"));
 
+        
+        //sets up listeners for search fields
+        SearchField.textProperty().addListener((Observable o) ->
+        {
+            if(SearchField.textProperty().get().isEmpty())
+            {
+                AddPartTable.setItems(data.getAllParts());
+                return;
+            }
+            ObservableList<Part> tableItems = FXCollections.observableArrayList();
+            ObservableList<TableColumn<Part,?>> cols = AddPartTable.getColumns();
+            
+            for (int i = 0; i < data.getAllParts().size(); i++)
+            {
+                for (int j = 0; j < cols.size(); j++)
+                {
+                    TableColumn col = cols.get(j);
+                    String cellvalue = col.getCellData(data.getAllParts().get(i)).toString();
+                    cellvalue = cellvalue.toLowerCase();
+                    if(cellvalue.contains(SearchField.textProperty().get().toLowerCase()))
+                    {
+                        tableItems.add(data.getAllParts().get(i));
+                        break;
+                    }
+                    
+                }
+            }
+            AddPartTable.setItems(tableItems);
+        });
     }
+    
 
     @FXML
     private void addButtonHandler(ActionEvent event) {
