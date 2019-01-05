@@ -2,7 +2,6 @@ package main.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

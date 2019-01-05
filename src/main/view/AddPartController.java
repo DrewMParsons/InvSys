@@ -131,22 +131,19 @@ public class AddPartController  implements Initializable {
                         SaveButton.getScene().getWindow().hide();
                     } catch (NumberFormatException e) {
                         errorAlert("Machine ID must be a number");
-                        return;
                     }
                 } 
             } 
             
         } else{
             if (partValidation(outsourced, PartName, PartInv, PartPrice, PartMin, PartMax)){
-                if (isInputValid(PartOtherID, "Machine ID field must be Entered")) {
-                    try {
-                        inHousePart.setMachineId(Integer.parseInt(PartOtherID.getText()));
-                        data.addPart(inHousePart);
+                if (isInputValid(PartOtherID, "Company name field must be Entered")) {
+                    
+                        outsourced.setCompanyId(PartOtherID.getText());
+                        data.addPart(outsourced);
                         SaveButton.getScene().getWindow().hide();
-                    } catch (NumberFormatException e) {
-                        errorAlert("Machine ID must be a number");
-                        return;
-                    }
+                     
+                    
                 }
             }
             
