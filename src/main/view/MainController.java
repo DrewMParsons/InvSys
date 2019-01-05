@@ -19,7 +19,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-import static main.exceptions.Validations.*;
+import static main.exceptions.Alerts.deleteAlert;
+import static main.exceptions.Alerts.errorAlert;
+import static main.exceptions.Alerts.searchAlert;
 import main.model.InHouse;
 import main.model.Part;
 import main.model.Product;

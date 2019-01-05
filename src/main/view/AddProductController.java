@@ -12,6 +12,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import static main.exceptions.Alerts.cancelAlert;
+import static main.exceptions.Alerts.deleteAlert;
+import static main.exceptions.Alerts.errorAlert;
+import static main.exceptions.Alerts.searchAlert;
 import main.model.Inventory;
 import main.model.Part;
 import main.model.Product;
@@ -70,17 +74,10 @@ public class AddProductController implements Initializable {
     private TextField SearchField;
     private Product tempProduct = new Product();
     private Inventory data;
-    private ObservableList<Part> parts = FXCollections.observableArrayList();
+    
 
     //getters and setters
-    public ObservableList<Part> getParts() {
-        return parts;
-    }
-
-    public void setParts(ObservableList<Part> parts) {
-        this.parts = parts;
-    }
-
+    
     public Inventory getData() {
         return data;
     }
@@ -131,6 +128,7 @@ public class AddProductController implements Initializable {
     private void saveButtonHandler(ActionEvent event) {
 
         if (productValidation(tempProduct, GetProductName, GetProductInv, GetProductPrice, GetProductMin, GetProductMax)) {
+            ObservableList<Part> parts = FXCollections.observableArrayList();
             parts.addAll(DeletePartTable.getItems());
             if (parts.isEmpty()) {
                 errorAlert("Product must contain at least one part");

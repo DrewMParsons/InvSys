@@ -31,7 +31,7 @@ public class InventorySystem extends Application {
 
         systemInventory.addPart(new Outsourced("chain", 5, 1, 10, 2, "ChainDudes"));
         systemInventory.addPart(new InHouse("horn", 2, 3, 1, 90, 1));
-        systemInventory.addPart(new Outsourced("wheel", 10, 5, 20, 2, "TireDudes"));
+        systemInventory.addPart(new Outsourced("wheel", 10, 5, 20, 2, "TireBros"));
         systemInventory.addPart(new InHouse("seat", 7, 2, 1, 10, 1));
 
         //dummy info to test Product table

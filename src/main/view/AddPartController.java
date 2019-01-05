@@ -10,7 +10,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import static main.exceptions.Validations.*;
+import static main.exceptions.Alerts.cancelAlert;
+import static main.exceptions.Alerts.errorAlert;
+import static main.exceptions.Validations.isInputValid;
+import static main.exceptions.Validations.partValidation;
 import main.model.*;
 
 /**
@@ -130,9 +133,7 @@ public class AddPartController  implements Initializable {
                         errorAlert("Machine ID must be a number");
                         return;
                     }
-                } else {
-                    return;
-                }
+                } 
             } 
             
         } else{
@@ -146,8 +147,6 @@ public class AddPartController  implements Initializable {
                         errorAlert("Machine ID must be a number");
                         return;
                     }
-                } else {
-                    return;
                 }
             }
             

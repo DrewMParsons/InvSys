@@ -11,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import static main.exceptions.Alerts.cancelAlert;
+import static main.exceptions.Alerts.errorAlert;
 import static main.exceptions.Validations.*;
 import main.model.InHouse;
 import main.model.Inventory;

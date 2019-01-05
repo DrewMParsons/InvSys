@@ -12,6 +12,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import static main.exceptions.Alerts.cancelAlert;
+import static main.exceptions.Alerts.deleteAlert;
+import static main.exceptions.Alerts.errorAlert;
+import static main.exceptions.Alerts.searchAlert;
 import static main.exceptions.Validations.*;
 
 import main.model.Inventory;
